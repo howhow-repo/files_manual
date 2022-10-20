@@ -20,10 +20,11 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),  # Django admin route
     path("", include("apps.authentication.urls")),  # Auth routes - login / register
+    path("", include("index.urls")),
     path("docs/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path("api/", include("api.urls")),
     # ADD NEW Routes HERE
 
     # Leave `Home.Urls` as last the last line
-    path("", include("apps.home.urls")),
+    path("demo/", include("apps.demo.urls")),
 ]

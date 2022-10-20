@@ -15,8 +15,8 @@ class ListUsers(APIView):
     )
     def get(self, request):
         User = get_user_model()
-        users = User.objects.values()
+        users = User.objects.all()
         for u in users:
-            print(u)
+            print(u.username, u.department, u.is_accept)
 
-        return JsonResponse({},safe=False)
+        return JsonResponse({}, safe=False)

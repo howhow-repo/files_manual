@@ -12,8 +12,18 @@ DEPARTMENT_CHOICES = (
 )
 
 
+class BranchLocation(models.Model):
+    name = models.CharField(max_length=20)
+    location = models.CharField(max_length=100,  null=True, blank=True)
+    tel = models.CharField(max_length=20, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractUser):
     nickname = models.CharField(max_length=10, null=True, blank=True)
     department = models.CharField(max_length=10, choices=DEPARTMENT_CHOICES, default='其他')
     is_accept = models.BooleanField(default=False)
-    phone_number = models.CharField(max_length=10, null=True)
+    location = models.ForeignKey(BranchLocation, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True)
