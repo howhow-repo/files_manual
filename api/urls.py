@@ -2,9 +2,10 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from api.views import ListUsers
+from api.views import ListUsers,CheckServerHealth
 
 
 urlpatterns = [
-    path('ListUsers/', ListUsers.as_view(), name='ListUsers'),
+    path('CheckServerHealth', CheckServerHealth.as_view(), name='CheckServerHealth'),
+    path('ListUsers', ListUsers.as_view(), name='ListUsers'),
 ]

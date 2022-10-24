@@ -4,7 +4,8 @@
         <div class="navbar-brand header-logo">
             <a href="/" class="b-brand">
                 <div class="b-bg">
-                    <i class="feather icon-trending-up"></i>
+<!--                    <i class="feather icon-trending-up"></i>-->
+                    <img src="{{ ASSETS_ROOT }}/images/logo-thumb.png">
                 </div>
                 <span class="b-title">YAYOI Manual</span>
             </a>
@@ -17,14 +18,19 @@
                 </li>
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item {% if 'index' in segment %} active {% endif %}">
-                    <a href="/demo" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span
+                    <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span
                             class="pcoded-mtext">Dashboard</span></a>
                 </li>
-                <li data-username="Profile Page"
-                    class="nav-item {% if 'profile' in segment %} active {% endif %}">
-                    <a href="profile.html" class="nav-link">
-                        <span class="pcoded-micon"><i class="feather icon-user"></i></span>
-                            <span class="pcoded-mtext">Profile Page</span></a>
+
+                <li data-username="user_management"
+                    class="nav-item pcoded-hasmenu">
+                    <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span
+                            class="pcoded-mtext">User Management</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class=""><a href="/user_management" class="" target="_blank">全部</a></li>
+                        <li class=""><a href="/user_management/register.html" class="" target="_blank">Sign UP</a></li>
+                        <li class=""><a href="/user_management/login.html" class="" target="_blank">Sign IN</a></li>
+                    </ul>
                 </li>
 
             </ul>

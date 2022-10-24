@@ -23,6 +23,7 @@ urlpatterns = [
     path("", include("index.urls")),
     path("docs/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path("api/", include("api.urls")),
+    path("user_management/", include("employee.urls")),
     # ADD NEW Routes HERE
 
     # Leave `Home.Urls` as last the last line

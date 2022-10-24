@@ -21,9 +21,29 @@ class BranchLocation(models.Model):
         return self.name
 
 
+class Department(models.Model):
+    name = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def get_default_department(cls):
+        department, created = cls.objects.get_or_create(
+            name='其他',
+        )
+        return department.pk
+
+
+Department.objects.get_or_create(
+    name='開發'
+)[0].save()
+
+
 class User(AbstractUser):
     nickname = models.CharField(max_length=10, null=True, blank=True)
-    department = models.CharField(max_length=10, choices=DEPARTMENT_CHOICES, default='其他')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, default=Department.get_default_department(),
+                                   null=True)
     is_accept = models.BooleanField(default=False)
-    location = models.ForeignKey(BranchLocation, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    location = models.ForeignKey(BranchLocation, on_delete=models.CASCADE, default=None, blank=True, null=True)
     phone_number = models.CharField(max_length=20, null=True)

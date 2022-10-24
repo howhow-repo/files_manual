@@ -1,12 +1,15 @@
 # -*- encoding: utf-8 -*-
-
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, BranchLocation
+from .models import User, BranchLocation, Department
 
 
 class BranchLocationAdmin(admin.ModelAdmin):
     list_display = ('name', 'location', 'tel',)
+
+
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('name',)
 
 
 class CustomUserAdmin(UserAdmin):
@@ -33,4 +36,5 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(BranchLocation, BranchLocationAdmin)
+admin.site.register(Department, DepartmentAdmin)
 admin.site.register(User, CustomUserAdmin)

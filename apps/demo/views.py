@@ -8,7 +8,7 @@ from django.urls import reverse
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
+    context = {'segment': 'demo'}
 
     html_template = loader.get_template('home/demo.html')
     return HttpResponse(html_template.render(context, request))

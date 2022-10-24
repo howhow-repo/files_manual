@@ -20,26 +20,28 @@
                                 <div class="col-sm-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Edit Info</h5>
+                                            <h5>個人資訊</h5>
+                                            {% if errMsg != None%}
+                                                <small class="form-text text-danger">
+                                                    {{errMsg}}
+                                                </small>
+                                            {% endif %}
                                         </div>
+                                        <form method="POST" action="/update_user_profile">{%csrf_token%}
                                         <div class="card-block">
                                             <div class="row">
 
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Username</label>
-                                                        <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                                                               readonly value="{{ request.user.username }}">
-                                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                                        <h1>{{ request.user.username }}</h1>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
                                                         <label {% if not request.user.email %} class="text-danger" {% endif %}
                                                                for="exampleInputEmail1">Email address</label>
-                                                        <input type="email"
-                                                               {% if request.user.email %} readonly value="{{ request.user.email }}" {% endif %}
-                                                               class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                                        {{form.email}}
                                                         {% if not request.user.email %}
                                                             <small id="emailHelp" class="form-text text-danger">
                                                                 You don't have an email address associated with this account.
@@ -50,38 +52,37 @@
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
                                                         <label for="fn">First Name</label>
-                                                        <input type="email" class="form-control" id="fn" aria-describedby="emailHelp" placeholder="Your first name">
+                                                        {{form.first_name}}
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
                                                         <label for="ln">Last Name</label>
-                                                        <input type="email" class="form-control" id="ln" aria-describedby="emailHelp" placeholder="Your last name">
+                                                        {{form.last_name}}
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12 mb-4">
+                                                <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <label for="add">Address</label>
-                                                        <input type="email" class="form-control" id="add" aria-describedby="emailHelp" placeholder="Your address">
-                                                        <small id="addd" class="form-text text-muted">This is your shipments address</small>
+                                                        <label for="ln">Nick Name</label>
+                                                        {{form.nickname}}
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-12 mb-4">
+                                                <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <label for="abt">About Info</label>
-                                                        <textarea type="email" class="form-control" id="abt" aria-describedby="emailHelp" placeholder="Bio"></textarea>
-                                                        <small id="abf" class="form-text text-muted">We'll show this on your profile.</small>
+                                                        <label for="ln">Phone Number</label>
+                                                        {{form.phone_number}}
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-12 mb-2">
                                                     <div class="form-group">
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                        <input type = 'submit' class="btn btn-primary" value="Submit"></input>
+                                                        <a href="/" class="btn btn-danger">Cancel</a>
                                                     </div>
                                                 </div>
-
+                                        </form>
                                             </div>
                                         </div>
                                     </div>
