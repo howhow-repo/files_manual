@@ -27,9 +27,8 @@
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span
                             class="pcoded-mtext">User Management</span></a>
                     <ul class="pcoded-submenu">
-                        <li class=""><a href="/user_management" class="" target="_blank">全部</a></li>
-                        <li class=""><a href="/user_management/register.html" class="" target="_blank">Sign UP</a></li>
-                        <li class=""><a href="/user_management/login.html" class="" target="_blank">Sign IN</a></li>
+                        <li class=""><a href="{% url 'view_all_users' %}">全部</a></li>
+                        <li class=""><a href="{% url 'register_user' %}">創建使用者</a></li>
                     </ul>
                 </li>
 

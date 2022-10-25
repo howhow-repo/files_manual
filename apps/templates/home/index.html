@@ -30,17 +30,24 @@
                                         <form method="POST" action="/update_user_profile">{%csrf_token%}
                                         <div class="card-block">
                                             <div class="row">
-
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1">Username</label>
+                                                        <label>Username</label>
                                                         <h1>{{ request.user.username }}</h1>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <label {% if not request.user.email %} class="text-danger" {% endif %}
-                                                               for="exampleInputEmail1">Email address</label>
+                                                        <label>門市</label>
+                                                        <h4>{{ user.location }}</h4>
+                                                        <label>部門</label>
+                                                        <h4>{{ user.department }}</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 mb-4">
+                                                    <div class="form-group">
+                                                        <label {% if not request.user.email %} class="text-danger" {% endif %}>
+                                                            Email address</label>
                                                         {{form.email}}
                                                         {% if not request.user.email %}
                                                             <small id="emailHelp" class="form-text text-danger">
@@ -82,7 +89,7 @@
                                                         <a href="/" class="btn btn-danger">Cancel</a>
                                                     </div>
                                                 </div>
-                                        </form>
+                                            </form>
                                             </div>
                                         </div>
                                     </div>
