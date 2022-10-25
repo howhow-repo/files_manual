@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
 from django.urls import path
-from .views import index, update_user_profile
+from .views import index, change_password
 
 
 urlpatterns = [
     path("", index, name='index'),
-    path("update_user_profile", update_user_profile, name='update_user_profile'),
+    path("change_password", change_password, name='change_password'),
+
 ]

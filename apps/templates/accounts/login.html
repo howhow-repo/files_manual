@@ -44,21 +44,7 @@
 
                     </form>
 
-                    <p class="mb-0 text-muted">Don’t have an account? <a href="{% url 'register' %}" >Sign UP</a></p>
-
                     <br />
-
-                    {% if GITHUB_AUTH %}
-                    <div class="mx-2">
-                        <form method="post" action="/social_login/github/login/?next=%2F">
-                            {% csrf_token %}
-                            <button class="btn btn-light" type="submit" style="background-color: #ffffff; border-color: #ffffff;">
-                                <i class="feather icon-github auth-icon"></i></button>
-                        </form>
-                        <span class="mx-1">Sign IN with GitHub</span>
-                    </div>                   
-                    {% endif %}   
-
                 </div>
             </div>
         </div>

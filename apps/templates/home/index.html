@@ -21,13 +21,18 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h5>個人資訊</h5>
-                                            {% if errMsg != None%}
+                                            {% if errMsg != None %}
                                                 <small class="form-text text-danger">
                                                     {{errMsg}}
                                                 </small>
                                             {% endif %}
+                                            {% if Msg != None %}
+                                                <small class="form-text text-success">
+                                                    {{Msg}}
+                                                </small>
+                                            {% endif %}
                                         </div>
-                                        <form method="POST" action="/update_user_profile">{%csrf_token%}
+                                        <form method="POST" action="/">{%csrf_token%}
                                         <div class="card-block">
                                             <div class="row">
                                                 <div class="col-sm-6 mb-4">
@@ -44,6 +49,21 @@
                                                         <h4>{{ user.department }}</h4>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-sm-3 mb-4">
+                                                    <div class="form-group">
+                                                        <label>First Name</label>
+                                                        {{form.first_name}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3 mb-4">
+                                                    <div class="form-group">
+                                                        <label>Last Name</label>
+                                                        {{form.last_name}}
+                                                    </div>
+                                                </div>
+
+
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
                                                         <label {% if not request.user.email %} class="text-danger" {% endif %}>
@@ -56,29 +76,18 @@
                                                         {% endif %}
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6 mb-4">
-                                                    <div class="form-group">
-                                                        <label for="fn">First Name</label>
-                                                        {{form.first_name}}
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6 mb-4">
-                                                    <div class="form-group">
-                                                        <label for="ln">Last Name</label>
-                                                        {{form.last_name}}
-                                                    </div>
-                                                </div>
+
 
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <label for="ln">Nick Name</label>
+                                                        <label>Nick Name</label>
                                                         {{form.nickname}}
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-6 mb-4">
                                                     <div class="form-group">
-                                                        <label for="ln">Phone Number</label>
+                                                        <label>Phone Number</label>
                                                         {{form.phone_number}}
                                                     </div>
                                                 </div>
@@ -87,10 +96,12 @@
                                                     <div class="form-group">
                                                         <input type = 'submit' class="btn btn-primary" value="Submit"></input>
                                                         <a href="/" class="btn btn-danger">Cancel</a>
+                                                        <a href="/change_password" class="btn btn-light">Change password</a>
                                                     </div>
                                                 </div>
-                                            </form>
+
                                             </div>
+                                        </form>
                                         </div>
                                     </div>
                                 </div>
