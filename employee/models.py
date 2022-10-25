@@ -13,10 +13,13 @@ class BranchLocation(models.Model):
 
     @classmethod
     def get_default_location(cls):
-        location, created = cls.objects.get_or_create(
-            name='其他',
-        )
-        return location.pk
+        try:  # try catch to avoid error while makemigrations
+            location, created = cls.objects.get_or_create(
+                name='其他',
+            )
+            return location.pk
+        except Exception:
+            pass
 
 
 class Department(models.Model):
@@ -27,15 +30,13 @@ class Department(models.Model):
 
     @classmethod
     def get_default_department(cls):
-        department, created = cls.objects.get_or_create(
-            name='其他',
-        )
-        return department.pk
-
-
-Department.objects.get_or_create(
-    name='開發'
-)[0].save()
+        try:  # try catch to avoid error while makemigrations
+            department, created = cls.objects.get_or_create(
+                name='其他',
+            )
+            return department.pk
+        except Exception:
+            pass
 
 
 class User(AbstractUser):

@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
-from employee.models import User, Department, BranchLocation
+from employee.models import Department, BranchLocation
 
 
 class LoginForm(forms.Form):
@@ -14,7 +14,6 @@ class LoginForm(forms.Form):
             }
         ))
     password = forms.CharField(
-        required=False,
         widget=forms.PasswordInput(
             attrs={
                 "placeholder": "Password",
