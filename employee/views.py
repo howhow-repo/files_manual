@@ -9,23 +9,24 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
 
-def is_manager(request):
-    User = get_user_model()
-    user = User.objects.get(username=request.user)
-    if user.department.name == '管理':
-        return True
-    else:
-        return False
+def manager_required(func):
+    def wrapper(request, *args, **kwargs):
+        User = get_user_model()
+        user = User.objects.get(username=request.user)
+        if user.department.name == '管理':
+            return func(request, *args, **kwargs)
+        else:
+            html_template = loader.get_template('home/page-403.html')
+            return HttpResponse(html_template.render({}, request))
+    return wrapper
 
 
+@manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def view_all_users(request):
-    if not is_manager(request):
-        html_template = loader.get_template('home/page-403.html')
-        return HttpResponse(html_template.render({}, request))
-
     context = {
+        'manager': True,
         'segment': 'user_management',
         'users': []
     }
@@ -38,19 +39,17 @@ def view_all_users(request):
                 'nickname': u.nickname,
                 'location': u.location,
                 'department': u.department,
-                'is_accept': u.is_accept,
+                # 'is_accept': u.is_accept,
                 'phone_number': u.phone_number,
             })
     html_template = loader.get_template('home/user_management.html')
     return HttpResponse(html_template.render(context, request))
 
 
+@manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def register_user(request):
-    if not is_manager(request):
-        html_template = loader.get_template('home/page-403.html')
-        return HttpResponse(html_template.render({}, request))
     msg = None
     success = False
 
@@ -68,20 +67,19 @@ def register_user(request):
 
     return render(request, "home/create_user.html",
                   {
+                      'manager': True,
                       'segment': 'user_management',
-                      "form": form,
-                      "msg": msg,
-                      "success": success
+                      'form': form,
+                      'msg': msg,
+                      'success': success
                   })
 
 
+@manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def edit_user(request, username):
-    if not is_manager(request):
-        html_template = loader.get_template('home/page-403.html')
-        return HttpResponse(html_template.render({}, request))
-    context = {'segment': 'user_management', 'edit_user': username}
+    context = {'manager': True, 'segment': 'user_management', 'edit_user': username}
     User = get_user_model()
     user = User.objects.get(username=username)
     form = UserProfileEdit()
@@ -108,12 +106,10 @@ def edit_user(request, username):
     return HttpResponse(html_template.render(context, request))
 
 
+@manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def delete_user(request, username):
-    if not is_manager(request):
-        html_template = loader.get_template('home/page-403.html')
-        return HttpResponse(html_template.render({}, request))
     User = get_user_model()
     user = User.objects.get(username=username)
 
@@ -125,7 +121,7 @@ def delete_user(request, username):
         return HttpResponseRedirect("/user_management")
 
     else:
-        context = {'segment': 'user_management', 'delete_user': username, 'form': DeleteUserForm()}
+        context = {'manager': True, 'segment': 'user_management', 'delete_user': username, 'form': DeleteUserForm()}
         html_template = loader.get_template('home/delete_user_confirm.html')
         return HttpResponse(html_template.render(context, request))
 

@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.template import loader
-from decouple import config
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
@@ -14,6 +13,8 @@ def index(request):
     context = {'segment': 'index'}
     User = get_user_model()
     user = User.objects.get(username=request.user)
+    if user.department.name == '管理':
+        context['manager'] = True
     form = UserProfileEdit()
 
     if request.method == 'POST':

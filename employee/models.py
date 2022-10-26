@@ -43,7 +43,7 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=10, null=True, blank=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, default=None,
                                    null=True)
-    is_accept = models.BooleanField(default=False)
     location = models.ForeignKey(BranchLocation, on_delete=models.CASCADE, default=None,
                                  blank=True, null=True)
     phone_number = models.CharField(max_length=20, null=True)
+    is_accept = models.BooleanField(default=True)

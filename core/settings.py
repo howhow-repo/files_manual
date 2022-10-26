@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-import os, environ
+import environ
+import os
+
 from decouple import config
 
 env = environ.Env(

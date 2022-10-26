@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.urls import path
 from .views import view_all_users, register_user, edit_user, delete_user
 
