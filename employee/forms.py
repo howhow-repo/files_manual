@@ -84,7 +84,7 @@ class SignUpForm(UserCreationForm):
         widget=forms.Select(
             attrs={
                 "placeholder": "department",
-                "class": "btn btn-secondary dropdown-toggle"
+                "class": "form-control"
             }
         )
     )
@@ -95,7 +95,7 @@ class SignUpForm(UserCreationForm):
         widget=forms.Select(
             attrs={
                 "placeholder": "location",
-                "class": "btn btn-secondary dropdown-toggle"
+                "class": "form-control"
             }
         )
     )
@@ -119,4 +119,8 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'email', 'phone_number', 'password1', 'password2')
+        fields = ('username', 'email', 'phone_number', 'password1', 'password2', 'location', 'department')
+
+
+class DeleteUserForm(forms.Form):
+    confirm = forms.CharField(widget=forms.HiddenInput(), initial='yes')

@@ -12,4 +12,5 @@ class UserProfileEdit(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['nickname', 'first_name', 'last_name', 'email', 'phone_number']
+        fields = ['nickname', 'first_name', 'last_name', 'email', 'phone_number',
+                  'location', 'department', 'is_accept']

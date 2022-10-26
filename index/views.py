@@ -9,12 +9,6 @@ from django.contrib.auth import update_session_auth_hash
 from .forms import UserProfileEdit
 
 
-CONTEXT = {
-    "PROJECT_TITLE": config('PROJECT_TITLE', default='unnamed'),
-    "segment": 'Index',
-}
-
-
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
