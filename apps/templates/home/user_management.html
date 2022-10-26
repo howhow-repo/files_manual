@@ -1,6 +1,6 @@
 {% extends "layouts/new_base.html" %}
 
-{% block title %} UI Tables {% endblock %} 
+{% block title %} User Management {% endblock %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -13,35 +13,18 @@
 
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
-                    <!-- [ breadcrumb ] start -->
-                    <div class="page-header">
-                        <div class="page-block">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <div class="page-header-title">
-                                        <h5 class="m-b-10">Bootstrap Basic Tables</h5>
-                                    </div>
-                                    <ul class="breadcrumb">
-                                        <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                                        <li class="breadcrumb-item"><a href="#!">Tables</a></li>
-                                        <li class="breadcrumb-item"><a href="javascript:">Basic Tables</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- [ breadcrumb ] end -->
                     <div class="main-body">
                         <div class="page-wrapper">
                             <!-- [ Main Content ] start -->
                             <div class="row">
-
                                 <!-- [ Hover-table ] start -->
                                 <div class="col-xl-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>Hover Table</h5>
-                                            <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
+                                            <h5>使用者一覽</h5>
+                                            <span class="d-block m-t-5">
+                                                使用右側<code>edit</code>按鈕進入編輯頁面
+                                            </span>
                                         </div>
                                         <div class="card-block table-border-style">
                                             <div class="table-responsive">
@@ -54,7 +37,7 @@
                                                             <th>門市</th>
                                                             <th>職位</th>
                                                             <th>電話</th>
-                                                            <th>查閱權限</th>
+<!--                                                            <th>查閱權限</th>-->
                                                             <th></th>
                                                         </tr>
                                                     </thead>
@@ -68,7 +51,7 @@
                                                             <td>{{u.location}}</td>
                                                             <td>{{u.department}}</td>
                                                             <td>{{u.phone_number}}</td>
-                                                            <td>{{u.is_accept}}</td>
+<!--                                                            <td>{{u.is_accept}}</td>-->
                                                             <td><a href="{% url 'edit_user' u.username %}" class="btn btn-light">edit</a></td>
                                                         </tr>
                                                         {% endfor %}
@@ -87,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </section>
     <!-- [ Main Content ] end -->

@@ -23,8 +23,8 @@ class RecipeType(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=20)
     type = models.ForeignKey(RecipeType, on_delete=models.CASCADE, default=None,null=True)
-    picture = models.FileField(upload_to='Recipe')
-    pdf = models.FileField(upload_to='Recipe')
+    picture = models.FileField(upload_to='Recipe/img')
+    pdf = models.FileField(upload_to='Recipe/doc')
     last_update = models.DateTimeField()
     description = models.CharField(max_length=100)
 
