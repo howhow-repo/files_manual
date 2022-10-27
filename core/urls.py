@@ -5,6 +5,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from employee.models import Department, BranchLocation
+from yayoi_recipe.models import RecipeType
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -22,6 +23,8 @@ Department.objects.get_or_create(name='內場')
 Department.objects.get_or_create(name='外場')
 Department.objects.get_or_create(name='管理')
 BranchLocation.objects.get_or_create(name='其他')
+RecipeType.objects.get_or_create(name='不分類')
+
 
 
 urlpatterns = [

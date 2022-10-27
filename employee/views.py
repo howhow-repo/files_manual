@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
 
-def manager_required(func):
+def manager_required(func):  # use as decorator
     def wrapper(request, *args, **kwargs):
         User = get_user_model()
         user = User.objects.get(username=request.user)
@@ -39,7 +39,6 @@ def view_all_users(request):
                 'nickname': u.nickname,
                 'location': u.location,
                 'department': u.department,
-                # 'is_accept': u.is_accept,
                 'phone_number': u.phone_number,
             })
     html_template = loader.get_template('home/user_management.html')
@@ -52,19 +51,15 @@ def view_all_users(request):
 def register_user(request):
     msg = None
     success = False
-
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('view_all_users')
-
         else:
             msg = 'Form is not valid'
-
     else:
         form = SignUpForm()
-
     return render(request, "home/create_user.html",
                   {
                       'manager': True,
@@ -91,7 +86,7 @@ def edit_user(request, username):
             user.save()
             context['Msg'] = 'Success'
         else:
-            context['errMsg'] = update_form.errors.as_data()
+            context['errMsg'] = 'Form is not valid'
 
     for element in form.fields:
         data_from_user = getattr(user, element)

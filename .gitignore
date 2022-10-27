@@ -12,6 +12,7 @@ __pycache__/
 *.log
 .idea
 */migrations
+Docs
 
 # venv
 .env

@@ -22,7 +22,7 @@
                                         <div class="card-header">
                                             <h5>新增使用者帳號</h5>
                                         </div>
-                                        <form method="POST" action="/user_management/register_user">{%csrf_token%}
+                                        <form method="POST" action="{% url 'register_user' %}">{%csrf_token%}
                                             <div class="card-block">
                                             <div class="row">
 

@@ -35,9 +35,23 @@
                 </li>
                 {% endif%}
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Recipe</label>
+                    <label>Recipes</label>
                 </li>
+                {% if manager%}
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                    class="nav-item {% if 'recipe_type' in segment %} active {% endif %}">
+                    <a href="{% url 'recipe_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
+                            class="pcoded-mtext">類型管理</span></a>
+                </li>
+                {% endif%}
 
+                {% if manager%}
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                    class="nav-item {% if 'upload_recipe' in segment %} active {% endif %}">
+                    <a href="{% url 'upload_recipe' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
+                            class="pcoded-mtext">上傳食譜</span></a>
+                </li>
+                {% endif%}
             </ul>
         </div>
     </div>

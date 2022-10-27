@@ -23,7 +23,10 @@ SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_007')
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Assets Management
-ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
+ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
+
+# path for documents & media
+DOCS_ROOT = 'Docs'
 
 # load production server from .env
 ALLOWED_HOSTS        = ['localhost', 'localhost:85', '127.0.0.1',               config('SERVER', default='127.0.0.1')]
