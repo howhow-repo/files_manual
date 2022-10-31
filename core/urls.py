@@ -35,6 +35,7 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("user_management/", include("employee.urls")),
     path("recipes/", include("yayoi_recipe.urls")),
+    path("resource/", include("doc_handle.urls")),
     # ADD NEW Routes HERE
 
     # Leave `Home.Urls` as last the last line

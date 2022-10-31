@@ -25,7 +25,7 @@ def update_doc(instance, filename) -> str:
 
 
 class RecipeType(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
     description = models.CharField(max_length=100, default=None)
 
     def __str__(self):

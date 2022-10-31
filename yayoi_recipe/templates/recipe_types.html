@@ -51,8 +51,14 @@
                                                         <tr>
                                                             <form method="POST" action="{% url 'recipe_types' %}">{%csrf_token%}
                                                             <th scope="row">new</th>
-                                                            <td>{{form.name}}</td>
-                                                            <td>{{form.description}}</td>
+                                                            <td>
+                                                                {{form.name}}
+                                                                <span class="text-error">{{ form.name.errors }}</span>
+                                                            </td>
+                                                            <td>
+                                                                {{form.description}}
+                                                                <span class="text-error">{{ form.description.errors }}</span>
+                                                            </td>
 
                                                             <td><input type = 'submit' class="btn btn-primary" value="Add">
                                                                 <a href="{% url 'recipe_types' %}" class="btn btn-light">cancel</a>

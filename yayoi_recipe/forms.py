@@ -13,6 +13,8 @@ class RecipeTypeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['description'].required = False
+        for f in self.fields:
+            self.fields[f].widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = RecipeType
@@ -35,4 +37,8 @@ class RecipeForm(forms.ModelForm):
 
 
 class DeleteRecipeTypeForm(forms.Form):
+    confirm = forms.CharField(widget=forms.HiddenInput(), initial='yes')
+
+
+class DeleteRecipeForm(forms.Form):
     confirm = forms.CharField(widget=forms.HiddenInput(), initial='yes')

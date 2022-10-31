@@ -9,6 +9,7 @@ class UserProfileEdit(forms.ModelForm):
 
         for field in self.Meta.fields:
             self.fields[field].required = False
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = User

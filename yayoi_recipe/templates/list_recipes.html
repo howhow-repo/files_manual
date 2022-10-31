@@ -27,10 +27,11 @@
                                         <div class="card-block border-bottom">
                                             <div class="row align-items-center justify-content-center">
                                                 <div class="col-auto">
-                                                    <i class="fab fa-facebook-f text-primary f-36"></i>
+                                                    <img style="width:180px;"
+                                                                    src="/resource/img/{{recipe.name}}">
                                                 </div>
                                                 <div class="col text-right">
-                                                    <h3>{{ recipe.name }}</h3>
+                                                    <h4>{{ recipe.name }}</h4>
                                                     <h5 class="text-muted"> {{ recipe.type }} </h5>
                                                 </div>
                                             </div>
@@ -46,9 +47,11 @@
                                                 <div class="col-3">
                                                     <a href="{% url 'recipe_pdf' recipe.type.name recipe.name %}" class="btn btn-secondary">PDF</a>
                                                 </div>
+                                                {% if manager != None %}
                                                 <div class="col-3">
                                                     <a href="{% url 'recipe_edit' recipe.type.name recipe.name %}" class="btn btn-light">Edit</a>
                                                 </div>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

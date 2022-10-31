@@ -14,3 +14,4 @@ django-sslserver
 
 djangorestframework~=3.14.0
 PyMySQL~=1.0.2
+Pillow~=9.2.0

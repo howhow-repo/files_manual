@@ -29,10 +29,7 @@ def index(request):
 
     for element in form.fields:
         data_from_user = getattr(user, element)
-        form.fields[element].widget.attrs.update({'class': 'form-control'})
-        if data_from_user is None or data_from_user == "":
-            form.fields[element].widget.attrs.update({'class': 'form-control'})
-        else:
+        if data_from_user is not None or data_from_user != "":
             form.fields[element].initial = data_from_user
 
     context['form'] = form
