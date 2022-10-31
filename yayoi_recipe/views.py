@@ -2,20 +2,25 @@
 from datetime import datetime
 
 from django.db.models import ProtectedError
+from django.shortcuts import render
 
 from .models import RecipeType, Recipe
 from employee.views import manager_required
 from .forms import RecipeTypeForm, DeleteRecipeTypeForm, RecipeForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import loader
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 
 
-def handle_uploaded_file(f, path:str, filename: str):
-    with open('some/file/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
+def is_manager(request):
+    User = get_user_model()
+    user = User.objects.get(username=request.user)
+    if user.department.name == '管理':
+        return True
+    else:
+        return False
 
 
 @manager_required
@@ -33,8 +38,7 @@ def recipe_types(request):
         form = RecipeTypeForm()
     context['types'] = RecipeType.objects.all()
     context['form'] = form
-    html_template = loader.get_template('home/recipe_types.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, 'recipe_types.html', context)
 
 
 @manager_required
@@ -54,8 +58,7 @@ def delete_recipe_type(request, recipe_type):
     else:
         form = DeleteRecipeTypeForm()
     context['form'] = form
-    html_template = loader.get_template('home/delete_recipe_type.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, 'delete_recipe_type.html', context)
 
 
 @manager_required
@@ -73,24 +76,45 @@ def upload_recipe(request):
     else:
         form = RecipeForm()
     context['form'] = form
-    html_template = loader.get_template('home/upload_recipe.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, 'upload_recipe.html', context)
 
 
+@require_http_methods(["GET"])
+@login_required(login_url="/login/")
+def list_recipes(request, recipe_type: str = 'all'):
+    context = {'segment': 'recipes'}
+    if is_manager(request):
+        context['manager'] = True
+    if recipe_type == 'all':
+        recipes = Recipe.objects.all()
+    else:
+        try:
+            recipetype = RecipeType.objects.get(name=recipe_type)
+            recipes = Recipe.objects.get(type=recipetype)
+        except Exception:
+            html_template = loader.get_template('home/page-404.html')
+            return HttpResponseNotFound(HttpResponse(html_template.render(context, request)))
+    for r in recipes:
+        context['recipes'] = recipes
+
+    return render(request, 'list_recipes.html', context)
+
+
+@manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
-def show_recipes(request, recipe_type):
+def recipe_edit(request, recipe_type: str, recipe_name: str):
     pass
 
 
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
-def show_recipe_info(request):
+def recipe_pdf(request, recipe_type: str, recipe_name: str):
     pass
 
 
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
-def add_recipe(request):
+def delete_recipe(request):
     pass

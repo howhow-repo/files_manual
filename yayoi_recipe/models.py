@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.db import models
 from django.conf import settings
-from PIL import Image
 
 
 def validate_file_extension(value):
@@ -27,7 +26,7 @@ def update_doc(instance, filename) -> str:
 
 class RecipeType(models.Model):
     name = models.CharField(max_length=20)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, default=None)
 
     def __str__(self):
         return self.name

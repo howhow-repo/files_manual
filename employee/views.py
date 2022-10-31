@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from .forms import SignUpForm, DeleteUserForm
 from index.forms import UserProfileEdit
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.template import loader
 
 
@@ -17,7 +17,7 @@ def manager_required(func):  # use as decorator
             return func(request, *args, **kwargs)
         else:
             html_template = loader.get_template('home/page-403.html')
-            return HttpResponse(html_template.render({}, request))
+            return HttpResponseForbidden(HttpResponse(html_template.render({}, request)))
     return wrapper
 
 
@@ -41,8 +41,7 @@ def view_all_users(request):
                 'department': u.department,
                 'phone_number': u.phone_number,
             })
-    html_template = loader.get_template('home/user_management.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, 'user_management.html', context)
 
 
 @manager_required
@@ -60,7 +59,7 @@ def register_user(request):
             msg = 'Form is not valid'
     else:
         form = SignUpForm()
-    return render(request, "home/create_user.html",
+    return render(request, "create_user.html",
                   {
                       'manager': True,
                       'segment': 'user_management',
@@ -97,8 +96,8 @@ def edit_user(request, username):
             form.fields[element].initial = data_from_user
 
     context['form'] = form
-    html_template = loader.get_template('home/edit_user.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, 'edit_user.html', context)
+
 
 
 @manager_required
@@ -117,6 +116,4 @@ def delete_user(request, username):
 
     else:
         context = {'manager': True, 'segment': 'user_management', 'delete_user': username, 'form': DeleteUserForm()}
-        html_template = loader.get_template('home/delete_user_confirm.html')
-        return HttpResponse(html_template.render(context, request))
-
+        return render(request, 'delete_user_confirm.html', context)

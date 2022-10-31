@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',                        # OAuth new
     'allauth.socialaccount.providers.github',       # OAuth new
     'allauth.socialaccount.providers.twitter',      # OAuth new
+    'index',
     'employee',
     'yayoi_recipe',
     'api',

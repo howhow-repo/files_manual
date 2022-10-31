@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
@@ -35,8 +36,7 @@ def index(request):
             form.fields[element].initial = data_from_user
 
     context['form'] = form
-    html_template = loader.get_template('home/index.html')
-    return HttpResponse(html_template.render(context, request))
+    return render(request, 'index.html', context)
 
 
 @login_required(login_url="/login/")
@@ -52,6 +52,4 @@ def change_password(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = PasswordChangeForm(request.user)
-
-    html_template = loader.get_template('home/change_password.html')
-    return HttpResponse(html_template.render({'form': form}, request))
+    return render(request, 'change_password.html', {'form': form})

@@ -52,6 +52,16 @@
                             class="pcoded-mtext">上傳食譜</span></a>
                 </li>
                 {% endif%}
+
+                <li data-username="recipes"
+                    class="nav-item pcoded-hasmenu" >
+                    <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-book"></i></span><span
+                            class="pcoded-mtext">Recipes</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class=""><a href="{% url 'list_all_recipes' 'all' %}">全部</a></li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>

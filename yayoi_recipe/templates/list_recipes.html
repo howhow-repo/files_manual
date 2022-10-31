@@ -1,0 +1,73 @@
+{% extends "layouts/new_base.html" %}
+
+{% block title %} Recipes {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <!-- [ breadcrumb ] start -->
+
+                    <!-- [ breadcrumb ] end -->
+                    <div class="main-body">
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                {% for recipe in recipes %}
+                                <!--[social-media section] start-->
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="card card-social">
+                                        <div class="card-block border-bottom">
+                                            <div class="row align-items-center justify-content-center">
+                                                <div class="col-auto">
+                                                    <i class="fab fa-facebook-f text-primary f-36"></i>
+                                                </div>
+                                                <div class="col text-right">
+                                                    <h3>{{ recipe.name }}</h3>
+                                                    <h5 class="text-muted"> {{ recipe.type }} </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-block">
+
+                                            <div class="row align-items-center justify-content-center card-active">
+                                                <div class="col-6">
+                                                    <h6 class="text-center m-b-10"><span
+                                                            class="text-muted m-r-5">Last Update:<br></span>{{ recipe.last_update|date:'Y-m-d H:i' }}</h6>
+
+                                                </div>
+                                                <div class="col-3">
+                                                    <a href="{% url 'recipe_pdf' recipe.type.name recipe.name %}" class="btn btn-secondary">PDF</a>
+                                                </div>
+                                                <div class="col-3">
+                                                    <a href="{% url 'recipe_edit' recipe.type.name recipe.name %}" class="btn btn-light">Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!--[social-media section] end-->
+
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->            
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

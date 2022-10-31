@@ -51,3 +51,5 @@ class CheckServerHealth(APIView):
             }
             return JsonResponse(healthy_msg)
         return HttpResponseForbidden()
+
+
