@@ -23,6 +23,17 @@ def is_manager(request):
         return False
 
 
+def is_in_database(recipe_type: str = None, recipe_name: str = None):
+    try:
+        if recipe_type:
+            RecipeType.objects.get(name=recipe_type)
+        if recipe_name:
+            Recipe.objects.get(name=recipe_name)
+        return True
+    except Exception:
+        return False
+
+
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
@@ -105,14 +116,13 @@ def list_recipes(request, recipe_type: str = 'all'):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def recipe_edit(request, recipe_type: str, recipe_name: str):
+    if not is_in_database(recipe_type, recipe_name):
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
+
     context = {'segment': 'recipes', 'manager': True}
     form = RecipeForm()
-    try:
-        recipetype = RecipeType.objects.get(name=recipe_type)
-        recipe_instence = Recipe.objects.get(name=recipe_name)
-    except Exception:
-        html_template = loader.get_template('home/page-404.html')
-        return HttpResponseNotFound(HttpResponse(html_template.render(context, request)))
+    recipe_instence = Recipe.objects.get(name=recipe_name)
     if request.method == "POST":
         form = RecipeForm(request.POST, request.FILES, instance=recipe_instence)
         if form.is_valid():
@@ -135,13 +145,11 @@ def recipe_edit(request, recipe_type: str, recipe_name: str):
 @login_required(login_url="/login/")
 def delete_recipe(request, recipe_type: str, recipe_name: str):
     context = {'segment': 'recipes', 'manager': True, 'recipe_type': recipe_type,'delete_recipe': recipe_name}
-    try:
-        recipetype = RecipeType.objects.get(name=recipe_type)
-        recipe_instence = Recipe.objects.get(name=recipe_name)
-    except Exception:
+    if not is_in_database(recipe_type, recipe_name):
         html_template = loader.get_template('home/page-404.html')
-        return HttpResponseNotFound(HttpResponse(html_template.render(context, request)))
+        return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
 
+    recipe_instence = Recipe.objects.get(name=recipe_name)
     if request.method == "POST":
         form = DeleteRecipeForm(request.POST)
         if form.is_valid() and form['confirm'].value() == 'yes':
@@ -151,12 +159,3 @@ def delete_recipe(request, recipe_type: str, recipe_name: str):
         form = DeleteRecipeForm()
     context['form'] = form
     return render(request, 'delete_recipe.html', context)
-
-
-@require_http_methods(["GET", "POST"])
-@login_required(login_url="/login/")
-def recipe_pdf(request, recipe_type: str, recipe_name: str):
-    pass
-
-
-

@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
 
@@ -10,6 +11,13 @@ def validate_file_extension(value):
     valid_extensions = ['.pdf']
     if not ext.lower() in valid_extensions:
         raise ValidationError('Unsupported file extension.')
+
+
+def validate_image(fieldfile_obj):
+    filesize = fieldfile_obj.file.size
+    megabyte_limit = 1.0
+    if filesize > megabyte_limit * 1024 * 1024:
+        raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 
 
 def update_img(instance, filename) -> str:
@@ -35,7 +43,7 @@ class RecipeType(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=20, unique=True)
     type = models.ForeignKey(RecipeType, on_delete=models.PROTECT, default=None, null=True)
-    picture = models.ImageField(upload_to=update_img)
+    picture = models.ImageField(upload_to=update_img, validators=[validate_image])
     pdf = models.FileField(upload_to=update_doc, validators=[validate_file_extension])
     last_update = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=100, null=True, blank=True)
