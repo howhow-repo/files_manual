@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
+import os
 from datetime import datetime
-
 from django.db.models import ProtectedError
 from django.shortcuts import render
 
 from .models import RecipeType, Recipe
-from employee.views import manager_required
+from employee.views import manager_required, set_org_data_in_form_initial
 from .forms import RecipeTypeForm, RecipeForm, DeleteRecipeTypeForm, DeleteRecipeForm
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import loader
@@ -24,14 +24,29 @@ def is_manager(request):
 
 
 def is_in_database(recipe_type: str = None, recipe_name: str = None):
-    try:
-        if recipe_type:
-            RecipeType.objects.get(name=recipe_type)
-        if recipe_name:
-            Recipe.objects.get(name=recipe_name)
-        return True
-    except Exception:
-        return False
+    if recipe_type and recipe_type != 'all':
+        if not RecipeType.objects.filter(name=recipe_type).exists():
+            return False
+    if recipe_name:
+        if not Recipe.objects.filter(name=recipe_name).exists():
+            return False
+    return True
+
+
+def get_recipes_by_type(rtype: str = 'all'):
+    if rtype == 'all':
+        return Recipe.objects.all()
+
+    return Recipe.objects.filter(type=rtype)
+
+
+def delete_recipe_related_file(recipe_instance):
+    img_path = recipe_instance.picture.name
+    pdf_path = recipe_instance.pdf.name
+    if os.path.isfile(img_path):
+        os.remove(img_path)
+    if os.path.isfile(pdf_path):
+        os.remove(pdf_path)
 
 
 @manager_required
@@ -57,10 +72,10 @@ def recipe_types(request):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def delete_recipe_type(request, recipe_type):
-    context = {'manager': True, 'segment': 'recipe_type', 'delete_recipe_type': recipe_type, 'form': DeleteRecipeTypeForm()}
+    context = {'manager': True, 'segment': 'recipe_type', 'delete_recipe_type': recipe_type}
     if request.method == "POST":
         form = DeleteRecipeTypeForm(request.POST)
-        if form.is_valid() and form['confirm'].value() == 'yes':
+        if form.is_valid():
             recipe_type = RecipeType.objects.filter(name=recipe_type)
             try:
                 recipe_type.delete()
@@ -94,20 +109,15 @@ def upload_recipe(request):
 @require_http_methods(["GET"])
 @login_required(login_url="/login/")
 def list_recipes(request, recipe_type: str = 'all'):
+    if not is_in_database(recipe_type=recipe_type):
+        html_template = loader.get_template('home/page-404.html')
+        return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
+
     context = {'segment': 'recipes'}
     if is_manager(request):
         context['manager'] = True
-    if recipe_type == 'all':
-        recipes = Recipe.objects.all()
-    else:
-        try:
-            recipetype = RecipeType.objects.get(name=recipe_type)
-            recipes = Recipe.objects.get(type=recipetype)
-        except Exception:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponseNotFound(HttpResponse(html_template.render(context, request)))
-    for r in recipes:
-        context['recipes'] = recipes
+
+    context['recipes'] = get_recipes_by_type(recipe_type)
 
     return render(request, 'list_recipes.html', context)
 
@@ -115,28 +125,36 @@ def list_recipes(request, recipe_type: str = 'all'):
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
-def recipe_edit(request, recipe_type: str, recipe_name: str):
+def update_recipe(request, recipe_type: str, recipe_name: str):
     if not is_in_database(recipe_type, recipe_name):
         html_template = loader.get_template('home/page-404.html')
         return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
 
-    context = {'segment': 'recipes', 'manager': True}
-    form = RecipeForm()
-    recipe_instence = Recipe.objects.get(name=recipe_name)
+    context = {'segment': 'recipes', 'manager': True, 'recipe_name': recipe_name, 'recipe_type': recipe_type}
+    recipe_instance = Recipe.objects.get(name=recipe_name)
+    old_pdf_path = recipe_instance.pdf.name
+    old_img_path = recipe_instance.picture.name
+
     if request.method == "POST":
-        form = RecipeForm(request.POST, request.FILES, instance=recipe_instence)
+        recipe_instance.last_update = datetime.now()
+        form = RecipeForm(request.POST, request.FILES, instance=recipe_instance)
         if form.is_valid():
+            if 'picture' in form.changed_data:
+                if os.path.isfile(old_img_path):
+                    os.remove(old_img_path)
+
+            if 'pdf' in form.changed_data:
+                if os.path.isfile(old_img_path):
+                    os.remove(old_pdf_path)
+
             form.save()
             return HttpResponseRedirect('/recipes/all')
+    else:
+        form = RecipeForm()
 
-    for element in form.fields:
-        initial_data = getattr(recipe_instence, element)
-        if initial_data is not None or initial_data != "":
-            form.fields[element].initial = initial_data
-
+    form = set_org_data_in_form_initial(recipe_instance, form, ['picture', 'pdf'])
+    form.fields['pdf'].required = False
     context['form'] = form
-    context['recipe_name'] = recipe_name
-    context['recipe_type'] = recipe_type
     return render(request, 'edit_recipe.html', context)
 
 
@@ -144,16 +162,17 @@ def recipe_edit(request, recipe_type: str, recipe_name: str):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def delete_recipe(request, recipe_type: str, recipe_name: str):
-    context = {'segment': 'recipes', 'manager': True, 'recipe_type': recipe_type,'delete_recipe': recipe_name}
     if not is_in_database(recipe_type, recipe_name):
         html_template = loader.get_template('home/page-404.html')
         return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
 
-    recipe_instence = Recipe.objects.get(name=recipe_name)
+    context = {'segment': 'recipes', 'manager': True, 'recipe_type': recipe_type, 'delete_recipe': recipe_name}
+    recipe_instance = Recipe.objects.get(name=recipe_name)
     if request.method == "POST":
         form = DeleteRecipeForm(request.POST)
         if form.is_valid() and form['confirm'].value() == 'yes':
-            recipe_instence.delete()
+            delete_recipe_related_file(recipe_instance)
+            recipe_instance.delete()
             return HttpResponseRedirect('/recipes/all')
     else:
         form = DeleteRecipeForm()

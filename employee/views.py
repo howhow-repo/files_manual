@@ -21,6 +21,16 @@ def manager_required(func):  # use as decorator
     return wrapper
 
 
+def set_org_data_in_form_initial(model_instance, form, skip_fields: list = []):
+    for element in form.fields:
+        if element in skip_fields:
+            continue
+        initial_data = getattr(model_instance, element)
+        if initial_data is not None or initial_data != "":
+            form.fields[element].initial = initial_data
+    return form
+
+
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
@@ -32,15 +42,7 @@ def view_all_users(request):
     }
     User = get_user_model()
     users = User.objects.all()
-    for u in users:
-        if u.username != request.user.username:
-            context['users'].append({
-                'username': u.username,
-                'nickname': u.nickname,
-                'location': u.location,
-                'department': u.department,
-                'phone_number': u.phone_number,
-            })
+    context['users'] = [u for u in users if u.username != request.user.username]
     return render(request, 'user_management.html', context)
 
 
@@ -87,13 +89,7 @@ def edit_user(request, username):
         else:
             context['errMsg'] = 'Form is not valid'
 
-    for element in form.fields:
-        data_from_user = getattr(user, element)
-        form.fields[element].widget.attrs.update({'class': 'form-control'})
-        if data_from_user is None or data_from_user == "":
-            form.fields[element].widget.attrs.update({'class': 'form-control'})
-        else:
-            form.fields[element].initial = data_from_user
+    form = set_org_data_in_form_initial(user, form)
 
     context['form'] = form
     return render(request, 'edit_user.html', context)
