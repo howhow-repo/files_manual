@@ -12,7 +12,8 @@ __pycache__/
 *.log
 .idea
 */migrations
-Docs
+Docs/*
+!Docs/.gitkeep
 
 # venv
 .env
