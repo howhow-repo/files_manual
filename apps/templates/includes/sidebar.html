@@ -14,12 +14,12 @@
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Navigation</label>
+                    <label>User</label>
                 </li>
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item {% if 'index' in segment %} active {% endif %}">
                     <a href="/" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span
-                            class="pcoded-mtext">Profile</span></a>
+                            class="pcoded-mtext">個人資訊</span></a>
                 </li>
 
                 {% if manager%}
@@ -27,7 +27,7 @@
                 <li data-username="user_management"
                     class="nav-item pcoded-hasmenu" >
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span
-                            class="pcoded-mtext">User Management</span></a>
+                            class="pcoded-mtext">使用者管理</span></a>
                     <ul class="pcoded-submenu">
                         <li class=""><a href="{% url 'view_all_users' %}">全部</a></li>
                         <li class=""><a href="{% url 'register_user' %}">創建使用者</a></li>
@@ -56,11 +56,14 @@
                 <li data-username="recipes"
                     class="nav-item pcoded-hasmenu" >
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-book"></i></span><span
-                            class="pcoded-mtext">Recipes</span></a>
+                            class="pcoded-mtext">食譜</span></a>
                     <ul class="pcoded-submenu">
                         <li class=""><a href="{% url 'list_all_recipes' 'all' %}">全部</a></li>
+                        <li class=""><a href="{% url 'search_recipe' %}">依類型搜尋</a></li>
                     </ul>
                 </li>
+
+
 
             </ul>
         </div>

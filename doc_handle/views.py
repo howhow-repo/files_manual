@@ -1,9 +1,7 @@
 # -*- encoding: utf-8 -*-
+import os
 from django.http import HttpResponse, HttpResponseNotFound
-from PIL import Image
-from django.shortcuts import render
 from django.template import loader
-
 from yayoi_recipe.models import Recipe
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -29,12 +27,12 @@ def recipe_img(request, recipe_name):
         html_template = loader.get_template('home/page-404.html')
         return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
 
-    try:
+    if os.path.isfile(path):
         with open(path, "rb") as file:
             return HttpResponse(file.read(), content_type="image/jpeg")
-    except IOError:
-        red = Image.new('RGBA', (1, 1), (255, 0, 0, 0))
-        return HttpResponse(red, content_type="image/jpeg")
+    else:
+        with open(settings.STATICFILES_DIRS[0] + '/assets/images/default_recipe_img.png', "rb") as file:
+            return HttpResponse(file.read(), content_type="image/jpeg")
 
 
 @login_required(login_url="/login/")

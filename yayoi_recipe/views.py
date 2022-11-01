@@ -36,8 +36,8 @@ def is_in_database(recipe_type: str = None, recipe_name: str = None):
 def get_recipes_by_type(rtype: str = 'all'):
     if rtype == 'all':
         return Recipe.objects.all()
-
-    return Recipe.objects.filter(type=rtype)
+    rtype = RecipeType.objects.get(name=rtype)
+    return Recipe.objects.filter(type=rtype.id)
 
 
 def delete_recipe_related_file(recipe_instance):
@@ -47,6 +47,11 @@ def delete_recipe_related_file(recipe_instance):
         os.remove(img_path)
     if os.path.isfile(pdf_path):
         os.remove(pdf_path)
+
+
+def http_not_found_page(request):
+    html_template = loader.get_template('home/page-404.html')
+    return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
 
 
 @manager_required
@@ -72,6 +77,9 @@ def recipe_types(request):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def delete_recipe_type(request, recipe_type):
+    if not is_in_database(recipe_type=recipe_type):
+        return http_not_found_page(request)
+
     context = {'manager': True, 'segment': 'recipe_type', 'delete_recipe_type': recipe_type}
     if request.method == "POST":
         form = DeleteRecipeTypeForm(request.POST)
@@ -108,10 +116,20 @@ def upload_recipe(request):
 
 @require_http_methods(["GET"])
 @login_required(login_url="/login/")
+def list_recipe_types(request):
+    context = {'segment': 'recipes'}
+    if is_manager(request):
+        context['manager'] = True
+    context['types'] = RecipeType.objects.all()
+
+    return render(request, 'search_by_types.html', context)
+
+
+@require_http_methods(["GET"])
+@login_required(login_url="/login/")
 def list_recipes(request, recipe_type: str = 'all'):
     if not is_in_database(recipe_type=recipe_type):
-        html_template = loader.get_template('home/page-404.html')
-        return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
+        return http_not_found_page(request)
 
     context = {'segment': 'recipes'}
     if is_manager(request):
@@ -119,6 +137,8 @@ def list_recipes(request, recipe_type: str = 'all'):
 
     context['recipes'] = get_recipes_by_type(recipe_type)
 
+    if not (context['recipes']):
+        context['empty'] = True
     return render(request, 'list_recipes.html', context)
 
 
@@ -127,8 +147,7 @@ def list_recipes(request, recipe_type: str = 'all'):
 @login_required(login_url="/login/")
 def update_recipe(request, recipe_type: str, recipe_name: str):
     if not is_in_database(recipe_type, recipe_name):
-        html_template = loader.get_template('home/page-404.html')
-        return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
+        return http_not_found_page(request)
 
     context = {'segment': 'recipes', 'manager': True, 'recipe_name': recipe_name, 'recipe_type': recipe_type}
     recipe_instance = Recipe.objects.get(name=recipe_name)
@@ -163,8 +182,7 @@ def update_recipe(request, recipe_type: str, recipe_name: str):
 @login_required(login_url="/login/")
 def delete_recipe(request, recipe_type: str, recipe_name: str):
     if not is_in_database(recipe_type, recipe_name):
-        html_template = loader.get_template('home/page-404.html')
-        return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
+        return http_not_found_page(request)
 
     context = {'segment': 'recipes', 'manager': True, 'recipe_type': recipe_type, 'delete_recipe': recipe_name}
     recipe_instance = Recipe.objects.get(name=recipe_name)

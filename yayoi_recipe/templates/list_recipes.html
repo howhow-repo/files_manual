@@ -10,55 +10,56 @@
     <!-- [ Main Content ] start -->
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
-
             <div class="pcoded-content">
                 <div class="pcoded-inner-content">
-                    <!-- [ breadcrumb ] start -->
-
-                    <!-- [ breadcrumb ] end -->
+                    <div class="col-sm-6">
+                        <input type="text" id="recipe-search" class="form-control mb-4" placeholder="search . . ">
+                    </div>
                     <div class="main-body">
+                        {% if empty %}
+                        <h2>No Recipe Found</h2>
+                        {% endif %}
                         <div class="page-wrapper">
                             <!-- [ Main Content ] start -->
                             <div class="row">
                                 {% for recipe in recipes %}
                                 <!--[social-media section] start-->
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="card card-social">
-                                        <div class="card-block border-bottom">
-                                            <div class="row align-items-center justify-content-center">
-                                                <div class="col-auto">
-                                                    <img style="width:180px; height:120px"
-                                                                    src="/resource/img/{{recipe.name}}">
-                                                </div>
-                                                <div class="col text-right">
-                                                    <h4>{{ recipe.name }}</h4>
-                                                    <h5 class="text-muted"> {{ recipe.type }} </h5>
+                                    <div class="col-md-6 col-xl-4" data-filter="{{recipe.name}}"  data-toggle="tooltip">
+                                        <div class="card card-social" >
+                                            <div class="card-block border-bottom">
+                                                <div class="row align-items-center justify-content-center">
+                                                    <div class="col-auto">
+                                                        <img style="width:180px; height:120px"
+                                                                        src="/resource/img/{{recipe.name}}">
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <h4>{{ recipe.name }}</h4>
+                                                        <h5 class="text-muted"> {{ recipe.type }} </h5>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-block">
+                                            <div class="card-block">
 
-                                            <div class="row align-items-center justify-content-center card-active">
-                                                <div class="col-6">
-                                                    <h6 class="text-center m-b-10"><span
-                                                            class="text-muted m-r-5">Last Update:<br></span>{{ recipe.last_update|date:'Y-m-d H:i' }}</h6>
+                                                <div class="row align-items-center justify-content-center card-active">
+                                                    <div class="col-6">
+                                                        <h6 class="text-center m-b-10"><span
+                                                                class="text-muted m-r-5">Last Update:<br></span>{{ recipe.last_update|date:'Y-m-d H:i' }}</h6>
 
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <a href="{% url 'recipe_pdf' recipe.name %}" class="btn btn-secondary" target="_blank">PDF</a>
+                                                    </div>
+                                                    {% if manager != None %}
+                                                    <div class="col-3">
+                                                        <a href="{% url 'update_recipe' recipe.type recipe.name %}" class="btn btn-light">Edit</a>
+                                                    </div>
+                                                    {% endif %}
                                                 </div>
-                                                <div class="col-3">
-                                                    <a href="{% url 'recipe_pdf' recipe.name %}" class="btn btn-secondary" target="_blank">PDF</a>
-                                                </div>
-                                                {% if manager != None %}
-                                                <div class="col-3">
-                                                    <a href="{% url 'update_recipe' recipe.type recipe.name %}" class="btn btn-light">Edit</a>
-                                                </div>
-                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 {% endfor %}
                                 <!--[social-media section] end-->
-
                             </div>
                             <!-- [ Main Content ] end -->
                         </div>
@@ -73,4 +74,28 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+    {% if not empty %}
+        <script type="text/javascript">
+            $(window).on('load', function() {
+                $("#recipe-search").on("keyup", function() {
+                    var g = $(this).val().toLowerCase();
+                    $(".col-md-6.col-xl-4").each(function() {
+                        var t = $(this).attr('data-filter');
+                        if (t) {
+                            var s = t.toLowerCase();
+                        }
+                        if (s) {
+                            var n = s.indexOf(g);
+                            if (n !== -1) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock javascripts %}
