@@ -74,6 +74,14 @@
                 </li>
                 {% endif%}
 
+                {% if manager%}
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                    class="nav-item {% if 'upload_precaution' in segment %} active {% endif %}">
+                    <a href="{% url 'upload_precaution' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
+                            class="pcoded-mtext">上傳注意項</span></a>
+                </li>
+                {% endif%}
+
 
 
             </ul>

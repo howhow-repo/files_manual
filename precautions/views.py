@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 
 from employee.views import manager_required
 from yayoi_recipe.views import http_not_found_page
-from .forms import PrecautionTypeForm, DeletePrecautionTypeForm
+from .forms import PrecautionTypeForm, DeletePrecautionTypeForm, PrecautionForm
 from .models import PrecautionType, Precaution
 
 
@@ -66,3 +66,21 @@ def delete_precaution_type(request, precaution_type):
         form = DeletePrecautionTypeForm()
     context['form'] = form
     return render(request, 'delete_precaution_type.html', context)
+
+
+@manager_required
+@require_http_methods(["GET", "POST"])
+@login_required(login_url="/login/")
+def upload_precaution(request):
+    context = {'segment': 'upload_precaution', 'manager': True}
+    if request.method == "POST":
+        form = PrecautionForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            context['Msg'] = f'Success'
+        else:
+            context['errMsg'] = 'Form is not valid'
+    else:
+        form = PrecautionForm()
+    context['form'] = form
+    return render(request, 'upload_precaution.html', context)
