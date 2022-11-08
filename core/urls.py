@@ -18,15 +18,16 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
-
-Department.objects.get_or_create(name='其他')
-Department.objects.get_or_create(name='內場')
-Department.objects.get_or_create(name='外場')
-Department.objects.get_or_create(name='管理')
-BranchLocation.objects.get_or_create(name='其他')
-RecipeType.objects.get_or_create(name='不分類')
-PrecautionType.objects.get_or_create(name='一般')
-
+try:
+    Department.objects.get_or_create(name='其他')
+    Department.objects.get_or_create(name='內場')
+    Department.objects.get_or_create(name='外場')
+    Department.objects.get_or_create(name='管理')
+    BranchLocation.objects.get_or_create(name='其他')
+    RecipeType.objects.get_or_create(name='不分類')
+    PrecautionType.objects.get_or_create(name='一般')
+except Exception:
+    pass
 
 
 urlpatterns = [

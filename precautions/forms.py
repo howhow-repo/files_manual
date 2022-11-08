@@ -13,6 +13,7 @@ def docs_size(value): # add this to some file where you can import it from
 class PrecautionTypeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['description'].required = False
         for f in self.fields:
             self.fields[f].widget.attrs.update({'class': 'form-control'})
 
@@ -33,3 +34,7 @@ class PrecautionForm(forms.ModelForm):
     class Meta:
         model = Precaution
         fields = ('name', 'precaution_type', 'cover', 'description', 'file',)
+
+
+class DeletePrecautionTypeForm(forms.Form):
+    confirm = forms.CharField(widget=forms.HiddenInput(), initial='yes')
