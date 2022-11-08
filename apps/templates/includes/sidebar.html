@@ -62,6 +62,17 @@
                         <li class=""><a href="{% url 'search_recipe' %}">依類型搜尋</a></li>
                     </ul>
                 </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Precautions</label>
+                </li>
+
+                {% if manager%}
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                    class="nav-item {% if 'precaution_types' in segment %} active {% endif %}">
+                    <a href="{% url 'precaution_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
+                            class="pcoded-mtext">類型管理</span></a>
+                </li>
+                {% endif%}
 
 
 

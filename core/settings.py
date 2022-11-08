@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'index',
     'employee',
     'yayoi_recipe',
+    'precautions',
     'doc_handle',
     'api',
 

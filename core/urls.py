@@ -6,6 +6,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from employee.models import Department, BranchLocation
 from yayoi_recipe.models import RecipeType
+from precautions.models import PrecautionType
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -24,6 +25,7 @@ Department.objects.get_or_create(name='外場')
 Department.objects.get_or_create(name='管理')
 BranchLocation.objects.get_or_create(name='其他')
 RecipeType.objects.get_or_create(name='不分類')
+PrecautionType.objects.get_or_create(name='一般')
 
 
 
@@ -36,6 +38,7 @@ urlpatterns = [
     path("user_management/", include("employee.urls")),
     path("recipes/", include("yayoi_recipe.urls")),
     path("resource/", include("doc_handle.urls")),
+    path("precautions/", include("precautions.urls")),
     # ADD NEW Routes HERE
 
     # Leave `Home.Urls` as last the last line
