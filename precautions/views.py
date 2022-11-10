@@ -20,12 +20,6 @@ def is_in_database(precaution_type: str = None, precaution_name: str = None):
     return True
 
 
-def handle_uploaded_file(f):
-    with open(f.name, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-
-
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")

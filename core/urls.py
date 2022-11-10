@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
@@ -45,3 +47,6 @@ urlpatterns = [
     # Leave `Home.Urls` as last the last line
     path("demo/", include("apps.demo.urls")),
 ]
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -27,6 +27,8 @@ ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 
 # path for documents & media
 DOCS_ROOT = 'Docs'
+MEDIA_URL = 'media/'  # 用於指定url路徑
+MEDIA_ROOT = os.path.join(BASE_DIR, "Docs")
 
 # load production server from .env
 ALLOWED_HOSTS        = ['localhost', 'localhost:85', '127.0.0.1',               config('SERVER', default='127.0.0.1')]
@@ -46,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.demo',                                    # Enable the inner demo (demo)
+    # 'apps.demo',                                    # Enable the inner demo (demo)
     'apps.authentication',
     'allauth',                                      # OAuth new
     'allauth.account',                              # OAuth new
@@ -76,8 +78,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
-LOGIN_REDIRECT_URL = "demo"  # Route defined in demo/urls.py
-LOGOUT_REDIRECT_URL = "demo"  # Route defined in demo/urls.py
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 TEMPLATE_DIR = os.path.join(CORE_DIR, "apps/templates")  # ROOT dir for templates
 
 TEMPLATES = [
@@ -175,17 +177,7 @@ LOGGING = {
             'level': config('DJANGO_LOG_LEVEL', default='INFO'),
             'propagate': False,
         },
-        'app': {
-            'handlers': ['console', 'file'],
-            'level': config('DJANGO_LOG_LEVEL', default='INFO'),
-            'propagate': False,
-        },
         'api': {
-            'handlers': ['console', 'file'],
-            'level': config('DJANGO_LOG_LEVEL', default='INFO'),
-            'propagate': False,
-        },
-        'notify': {
             'handlers': ['console', 'file'],
             'level': config('DJANGO_LOG_LEVEL', default='INFO'),
             'propagate': False,

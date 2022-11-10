@@ -30,7 +30,7 @@
                                                 <div class="row align-items-center justify-content-center">
                                                     <div class="col-auto">
                                                         <img style="width:180px; height:120px"
-                                                                        src="/resource/img/{{recipe.name}}">
+                                                                        src="{% url 'recipe_img' recipe.name %}">
                                                     </div>
                                                     <div class="col text-right">
                                                         <h4>{{ recipe.name }}</h4>
