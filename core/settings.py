@@ -105,15 +105,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "mysql":
-    DATABASES = { 
+    DATABASES = {
       'default': {
-        'ENGINE'  : 'django.db.backends.mysql', 
+        'ENGINE'  : 'django.db.backends.mysql',
         'NAME'    : config('DB_NAME', cast=str),
         'USER'    : config('DB_USERNAME', cast=str),
         'PASSWORD': config('DB_PASS', cast=str),
         'HOST'    : config('DB_HOST', cast=str),
         'PORT'    : config('DB_PORT', cast=int),
-        }, 
+        },
     }
 else:
     DATABASES = {
@@ -140,6 +140,14 @@ else:
 #         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
 #     },
 # ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+        )
+}
+
 
 AUTH_USER_MODEL = 'employee.User'
 
@@ -216,11 +224,11 @@ STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
-) 
+)
 
 #############################################################
 
-SITE_ID                    = 1 
+SITE_ID                    = 1
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 SOCIALACCOUNT_PROVIDERS = {}

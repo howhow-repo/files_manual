@@ -33,13 +33,6 @@ def is_in_database(recipe_type: str = None, recipe_name: str = None):
     return True
 
 
-def get_recipes_by_type(rtype: str = 'all'):
-    if rtype == 'all':
-        return Recipe.objects.all()
-    rtype = RecipeType.objects.get(name=rtype)
-    return Recipe.objects.filter(type=rtype.id)
-
-
 def delete_recipe_related_file(recipe_instance):
     img_path = recipe_instance.picture.name
     pdf_path = recipe_instance.pdf.name
@@ -135,7 +128,10 @@ def list_recipes(request, recipe_type: str = 'all'):
     if is_manager(request):
         context['manager'] = True
 
-    context['recipes'] = get_recipes_by_type(recipe_type)
+    if recipe_type == 'all':
+        context['recipes'] =  Recipe.objects.all()
+    else:
+        context['recipes'] = Recipe.objects.filter(type__name=recipe_type)
 
     if not (context['recipes']):
         context['empty'] = True
