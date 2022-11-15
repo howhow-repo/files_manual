@@ -105,10 +105,6 @@ class AmILogin(APIView):
 
     @swagger_auto_schema(
         operation_summary='Use it to Check Auth.',
-        manual_parameters=[
-            openapi.Parameter('csrfmiddlewaretoken', openapi.IN_FORM, type=openapi.TYPE_STRING,
-                              description='Please enter your csrf token.')
-        ]
     )
     def post(self, request):
         form = CheckLoginForm(request.POST or None)
@@ -176,7 +172,7 @@ class GetRecipeDoc(APIView):
 
 class GetRecipeImg(APIView):
     @swagger_auto_schema(
-        operation_summary='GetRecipe pdf.',
+        operation_summary='GetRecipe cover image.',
     )
     def get(self, resqest, recipe_name):
         if not resqest.user.is_authenticated:

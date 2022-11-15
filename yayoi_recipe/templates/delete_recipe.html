@@ -46,7 +46,7 @@
                                         </div>
                                         <div class="card-block">
                                             <form method="POST" action="{% url 'delete_recipe' recipe_type delete_recipe %}">{%csrf_token%}
-                                                <td><a href="{% url 'list_all_recipes' 'all' %}" class="btn btn-light">Cancel</a></td>
+                                                <td><a href="{% url 'list_recipes' 'all' %}" class="btn btn-light">Cancel</a></td>
                                                 {{form.confirm}}
                                                 <input type = 'submit' class="btn btn-danger" value="Delete">
                                             </form>

@@ -14,6 +14,11 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 
 
+def remove_document(path):
+    if os.path.isfile(path):
+        os.remove(path)
+
+
 def is_manager(request):
     User = get_user_model()
     user = User.objects.get(username=request.user)
@@ -34,7 +39,7 @@ def is_in_database(recipe_type: str = None, recipe_name: str = None):
 
 
 def delete_recipe_related_file(recipe_instance):
-    img_path = recipe_instance.picture.name
+    img_path = recipe_instance.cover.name
     pdf_path = recipe_instance.pdf.name
     if os.path.isfile(img_path):
         os.remove(img_path)
@@ -129,7 +134,7 @@ def list_recipes(request, recipe_type: str = 'all'):
         context['manager'] = True
 
     if recipe_type == 'all':
-        context['recipes'] =  Recipe.objects.all()
+        context['recipes'] = Recipe.objects.all()
     else:
         context['recipes'] = Recipe.objects.filter(type__name=recipe_type)
 
@@ -148,26 +153,24 @@ def update_recipe(request, recipe_type: str, recipe_name: str):
     context = {'segment': 'recipes', 'manager': True, 'recipe_name': recipe_name, 'recipe_type': recipe_type}
     recipe_instance = Recipe.objects.get(name=recipe_name)
     old_pdf_path = recipe_instance.pdf.name
-    old_img_path = recipe_instance.picture.name
+    old_img_path = recipe_instance.cover.name
 
     if request.method == "POST":
         recipe_instance.last_update = datetime.now()
         form = RecipeForm(request.POST, request.FILES, instance=recipe_instance)
         if form.is_valid():
-            if 'picture' in form.changed_data:
-                if os.path.isfile(old_img_path):
-                    os.remove(old_img_path)
+            if 'cover' in form.changed_data:
+                remove_document(old_img_path)
 
             if 'pdf' in form.changed_data:
-                if os.path.isfile(old_img_path):
-                    os.remove(old_pdf_path)
+                remove_document(old_pdf_path)
 
             form.save()
             return HttpResponseRedirect('/recipes/all')
     else:
         form = RecipeForm()
 
-    form = set_org_data_in_form_initial(recipe_instance, form, ['picture', 'pdf'])
+    form = set_org_data_in_form_initial(recipe_instance, form, ['cover', 'pdf'])
     form.fields['pdf'].required = False
     context['form'] = form
     return render(request, 'edit_recipe.html', context)

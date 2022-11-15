@@ -26,14 +26,15 @@ class RecipeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for f in self.fields:
             self.fields[f].widget.attrs.update({'class': 'form-control'})
-        self.fields['picture'].required = False
+        self.fields['cover'].required = False
         self.fields['description'].required = False
         self.fields['description'].widget.attrs.update({'rows': 3})
+        self.fields['pdf'].required = False
         self.fields['pdf'].validators = [file_size]
 
     class Meta:
         model = Recipe
-        fields = ('name', 'type', 'picture', 'pdf', 'description',)
+        fields = ('name', 'type', 'cover', 'pdf', 'description',)
 
 
 class DeleteRecipeTypeForm(forms.Form):

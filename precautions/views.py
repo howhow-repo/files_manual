@@ -5,7 +5,8 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
 from employee.views import manager_required
-from yayoi_recipe.views import http_not_found_page
+from yayoi_recipe.views import http_not_found_page, is_manager
+from doc_handle.views import video_extension, doc_extension
 from .forms import PrecautionTypeForm, DeletePrecautionTypeForm, PrecautionForm
 from .models import PrecautionType, Precaution
 
@@ -18,6 +19,17 @@ def is_in_database(precaution_type: str = None, precaution_name: str = None):
         if not Precaution.objects.filter(name=precaution_name).exists():
             return False
     return True
+
+
+def set_data_type(precaution: Precaution):
+    if not precaution.file:
+        return
+    file_extension = precaution.file.name.split('.')[-1]
+    if file_extension in video_extension:
+        precaution.doc_type = '影片'
+    elif file_extension in doc_extension:
+        precaution.doc_type = file_extension.upper()
+    precaution.save()
 
 
 @manager_required
@@ -71,6 +83,8 @@ def upload_precaution(request):
         form = PrecautionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            precaution = Precaution.objects.get(name=form.data['name'])
+            set_data_type(precaution)
             context['Msg'] = f'Success'
         else:
             context['errMsg'] = 'Form is not valid'
@@ -78,3 +92,54 @@ def upload_precaution(request):
         form = PrecautionForm()
     context['form'] = form
     return render(request, 'upload_precaution.html', context)
+
+
+@require_http_methods(["GET"])
+@login_required(login_url="/login/")
+def list_precautions(request, precaution_type: str = 'all'):
+    context = {'segment': 'precaution'}
+    if is_manager(request):
+        context['manager'] = True
+    if precaution_type == 'all':
+        context['precaution'] = Precaution.objects.all()
+    else:
+        context['precaution'] = Precaution.objects.filter(type__name=precaution_type)
+
+    if not (context['precaution']):
+        context['empty'] = True
+
+    for p in context['precaution']:
+        if not p.doc_type:
+            p.doc_type = 'File'
+
+    return render(request, 'list_precautions.html', context)
+
+
+@require_http_methods(["GET"])
+@login_required(login_url="/login/")
+def percaution_detail(request, precaution_name):
+
+    context = {'segment': 'precaution'}
+    if is_manager(request):
+        context['manager'] = True
+
+    precaution = Precaution.objects.get(name=precaution_name)
+    if not precaution:
+        return http_not_found_page(request)
+    context['precaution'] = precaution
+    return render(request, 'precaution_detail.html', context)
+
+
+@manager_required
+@require_http_methods(["GET"])
+@login_required(login_url="/login/")
+def update_percaution(request, precaution_name):
+    context = {'segment': 'precaution'}
+    if is_manager(request):
+        context['manager'] = True
+    precaution = Precaution.objects.get(name=precaution_name)
+    if not precaution:
+        return http_not_found_page(request)
+
+
+

@@ -58,7 +58,7 @@
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-book"></i></span><span
                             class="pcoded-mtext">食譜</span></a>
                     <ul class="pcoded-submenu">
-                        <li class=""><a href="{% url 'list_all_recipes' 'all' %}">全部</a></li>
+                        <li class=""><a href="{% url 'list_recipes' 'all' %}">全部</a></li>
                         <li class=""><a href="{% url 'search_recipe' %}">依類型搜尋</a></li>
                     </ul>
                 </li>
@@ -81,6 +81,15 @@
                             class="pcoded-mtext">上傳注意項</span></a>
                 </li>
                 {% endif%}
+                <li data-username="precautions"
+                    class="nav-item pcoded-hasmenu" >
+                    <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-book"></i></span><span
+                            class="pcoded-mtext">注意事項</span></a>
+                    <ul class="pcoded-submenu">
+                        <li class=""><a href="{% url 'list_precautions' 'all' %}">全部</a></li>
+                    </ul>
+                </li>
+
                 <li class="nav-item pcoded-menu-caption">
                     <label>App Api</label>
                 </li>
@@ -89,6 +98,7 @@
                     <a href="{% url 'schema-swagger-ui' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-command"></i></span><span
                             class="pcoded-mtext">API</span></a>
                 </li>
+
 
 
             </ul>

@@ -6,7 +6,7 @@ from django.db import models
 
 def validate_file_extension(value):
     ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
-    valid_extensions = ['.pdf', '.mp4',]
+    valid_extensions = ['.pdf', '.mp4', ]
     if not ext.lower() in valid_extensions:
         raise ValidationError('Unsupported file extension.')
 
@@ -31,6 +31,8 @@ def update_doc(instance, filename) -> str:
         return settings.DOCS_ROOT + '/Precaution/video/%s.%s' % (filename_, file_extension)
     elif file_extension == 'pdf':
         return settings.DOCS_ROOT + '/Precaution/doc/%s.%s' % (filename_, file_extension)
+    else:
+        return settings.DOCS_ROOT + '/Precaution/other/%s.%s' % (filename_, file_extension)
 
 
 class PrecautionType(models.Model):
@@ -42,11 +44,11 @@ class PrecautionType(models.Model):
 
 
 class Precaution(models.Model):
-    name = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=20, unique=True)
     type = models.ForeignKey(PrecautionType, on_delete=models.PROTECT, default=None, null=True)
     cover = models.ImageField(upload_to=update_img, null=True, blank=True, validators=[validate_image])
-    doc_type = models.CharField(max_length=10,null=True, blank=True)
-    description = models.TextField(max_length=300, null=True, blank=True)
+    doc_type = models.CharField(max_length=10, null=True, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
     file = models.FileField(upload_to=update_doc, null=True, blank=True, validators=[validate_file_extension])
     last_update = models.DateTimeField(auto_now_add=True)
 

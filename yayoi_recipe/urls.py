@@ -7,7 +7,7 @@ urlpatterns = [
     path("recipe_type/<str:recipe_type>/delete", delete_recipe_type, name='delete_recipe_type'),
     path("upload_recipe", upload_recipe, name='upload_recipe'),
     path("search", list_recipe_types, name='search_recipe'),
-    path("<str:recipe_type>", list_recipes, name='list_all_recipes'),
+    path("<str:recipe_type>", list_recipes, name='list_recipes'),
     path("<str:recipe_type>/<str:recipe_name>", update_recipe, name='update_recipe'),
     path("<str:recipe_type>/<str:recipe_name>/delete", delete_recipe, name='delete_recipe'),
 ]

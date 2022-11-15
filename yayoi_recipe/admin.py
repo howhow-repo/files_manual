@@ -7,7 +7,7 @@ class RecipeTypeAdmin(admin.ModelAdmin):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type', 'picture', 'pdf', 'last_update', 'description')
+    list_display = ('name', 'type', 'cover', 'pdf', 'last_update', 'description')
 
 
 admin.site.register(RecipeType, RecipeTypeAdmin)

@@ -1,0 +1,101 @@
+{% extends "layouts/new_base.html" %}
+
+{% block title %} Precautions {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- [ Main Content ] start -->
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="col-sm-6">
+                        <input type="text" id="recipe-search" class="form-control mb-4" placeholder="search . . ">
+                    </div>
+                    <div class="main-body">
+                        {% if empty %}
+                        <h2>No Precaution Found</h2>
+                        {% endif %}
+                        <div class="page-wrapper">
+                            <!-- [ Main Content ] start -->
+                            <div class="row">
+                                {% for precaution in precaution %}
+                                <!--[social-media section] start-->
+                                    <div class="col-md-6 col-xl-4" data-filter="{{precaution.name}}"  data-toggle="tooltip">
+                                        <div class="card card-social" >
+                                            <div class="card-block border-bottom">
+                                                <div class="row align-items-center justify-content-center">
+                                                    <div class="col-auto">
+                                                        <img style="width:180px; height:120px"
+                                                                        src="{% url 'precaution_img' precaution.name %}">
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <h4>{{ precaution.name }}</h4>
+                                                        <h5 class="text-muted"> {{ precaution.type }} </h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+
+                                                <div class="row align-items-center justify-content-center card-active">
+                                                    <div class="col-6">
+                                                        <h6 class="text-center m-b-10"><span
+                                                                class="text-muted m-r-5">Last Update:<br></span>{{ precaution.last_update|date:'Y-m-d H:i' }}</h6>
+
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <a href="{% url 'precaution_doc' precaution.name %}" class="btn btn-secondary" target="_blank">{{precaution.doc_type}}</a>
+                                                    </div>
+                                                    {% if manager != None %}
+                                                    <div class="col-3">
+                                                        <a href="{% url 'update_precaution' precaution.type precaution.name %}" class="btn btn-light">Edit</a>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <!--[social-media section] end-->
+                            </div>
+                            <!-- [ Main Content ] end -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->            
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    {% if not empty %}
+        <script type="text/javascript">
+            $(window).on('load', function() {
+                $("#recipe-search").on("keyup", function() {
+                    var g = $(this).val().toLowerCase();
+                    $(".col-md-6.col-xl-4").each(function() {
+                        var t = $(this).attr('data-filter');
+                        if (t) {
+                            var s = t.toLowerCase();
+                        }
+                        if (s) {
+                            var n = s.indexOf(g);
+                            if (n !== -1) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock javascripts %}

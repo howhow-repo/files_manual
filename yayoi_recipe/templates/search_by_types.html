@@ -42,7 +42,7 @@
                                                             <td>{{t.name}}</td>
                                                             <td>{{t.description}}</td>
 
-                                                            <td><a href="{% url 'list_all_recipes' t.name %}" class="label theme-bg2 text-white f-12">go to</a></td>
+                                                            <td><a href="{% url 'list_recipes' t.name %}" class="label theme-bg2 text-white f-12">go to</a></td>
                                                         </tr>
                                                         {% endfor %}
                                                     </tbody>

@@ -42,7 +42,7 @@ class RecipeType(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=20, unique=True)
     type = models.ForeignKey(RecipeType, on_delete=models.PROTECT, default=None, null=True)
-    picture = models.ImageField(upload_to=update_img, validators=[validate_image])
+    cover = models.ImageField(upload_to=update_img, validators=[validate_image])
     pdf = models.FileField(upload_to=update_doc, validators=[validate_file_extension])
     last_update = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=100, null=True, blank=True)
