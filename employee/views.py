@@ -21,7 +21,9 @@ def manager_required(func):  # use as decorator
     return wrapper
 
 
-def set_org_data_in_form_initial(model_instance, form, skip_fields: list = []):
+def set_org_data_in_form_initial(model_instance, form, skip_fields=None):
+    if skip_fields is None:
+        skip_fields = []
     for element in form.fields:
         if element in skip_fields:
             continue

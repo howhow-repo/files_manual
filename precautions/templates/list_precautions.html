@@ -28,7 +28,7 @@
                                         <div class="card card-social" >
                                             <div class="card-block border-bottom">
                                                 <div class="row align-items-center justify-content-center">
-                                                    <div class="col-auto">
+                                                    <div class="col-left">
                                                         <img style="width:180px; height:120px"
                                                                         src="{% url 'precaution_img' precaution.name %}">
                                                     </div>
@@ -47,13 +47,13 @@
 
                                                     </div>
                                                     <div class="col-3">
-                                                        <a href="{% url 'precaution_doc' precaution.name %}" class="btn btn-secondary" target="_blank">{{precaution.doc_type}}</a>
+                                                        <a href="{% url 'precaution_doc' precaution.name %}" class="btn btn-secondary" target="_blank">
+                                                            {{precaution.doc_type}}
+                                                        </a>
                                                     </div>
-                                                    {% if manager != None %}
                                                     <div class="col-3">
-                                                        <a href="{% url 'update_precaution' precaution.type precaution.name %}" class="btn btn-light">Edit</a>
+                                                        <a href="{% url 'percaution_detail' precaution.type precaution.name %}" class="btn btn-light">詳細</a>
                                                     </div>
-                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@
     {% if not empty %}
         <script type="text/javascript">
             $(window).on('load', function() {
-                $("#recipe-search").on("keyup", function() {
+                $("#recipe-search").on("keyup", function(event) {
                     var g = $(this).val().toLowerCase();
                     $(".col-md-6.col-xl-4").each(function() {
                         var t = $(this).attr('data-filter');

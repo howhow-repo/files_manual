@@ -20,7 +20,7 @@
                                 <div class="col-sm-8">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3><span><h5>更新食譜|</h5></span> {{ recipe_name }}</h3>
+                                            <h3><span><h5>更新注意事項|</h5></span> {{ precaution_name }}</h3>
                                             {% if errMsg != None %}
                                                 <small class="form-text text-danger">
                                                     {{errMsg}}
@@ -32,7 +32,7 @@
                                                 </small>
                                             {% endif %}
                                         </div>
-                                        <form method="POST" action="{% url 'update_recipe' recipe_type recipe_name %}" enctype="multipart/form-data">{%csrf_token%}
+                                        <form method="POST" action="{% url 'update_precaution' precaution_type precaution_name %}" enctype="multipart/form-data">{%csrf_token%}
                                             <div class="card-block">
                                                 <div class="row">
 
@@ -53,9 +53,9 @@
                                                         <span class="text-error">{{ form.cover.errors }}</span>
                                                     </div>
                                                     <div class="col-sm-6 mb-4">
-                                                        <label>檔案(<8Mb)(pdf only)</label>
-                                                        {{ form.pdf }}
-                                                        <span class="text-error">{{ form.pdf.errors }}</span>
+                                                        <label>檔案(<8Mb)(pdf/mp4/mov)</label>
+                                                        {{ form.file }}
+                                                        <span class="text-error">{{ form.file.errors }}</span>
                                                     </div>
                                                     <div class="col-sm-12 mb-2">
                                                         <label>描述/備註</label>
@@ -67,7 +67,7 @@
                                                         <div class="form-group">
                                                             <input type = 'submit' class="btn btn-primary" value="Submit"></input>
                                                             <input type ="button" class="btn btn-light" onclick="history.back()" value="Cancel">
-                                                            <a href="{% url 'delete_recipe' recipe_type recipe_name %}" class="btn btn-danger">Delete</a>
+                                                            <a href="{% url 'delete_precaution' precaution_type precaution_name  %}" class="btn btn-danger">Delete</a>
                                                         </div>
                                                     </div>
 

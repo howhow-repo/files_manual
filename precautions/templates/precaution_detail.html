@@ -1,10 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layouts/new_base.html" %}
 
-</body>
-</html>
+{% block title %} Precautions {% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5> 名稱： {{ precaution.name }}</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <img style="width:300px; height:200px"
+                                             src="{% url 'precaution_img' precaution.name %}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5> 分類：</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center card-active">
+                                            <h4 class="f-w-300 d-flex align-items-center  m-b-0">{{ precaution.type.name }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>檔案類型</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center card-active">
+                                            <h4 class="f-w-300 d-flex align-items-center  m-b-0">
+                                                {{ precaution.doc_type }}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-xl-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>詳細</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <h5 class="f-w-300 d-flex align-items-center  m-b-0">
+                                            <pre>{{ precaution.description|linebreaksbr }}</pre>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <h7>last update: {{precaution.last_update}}</h7>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <a href="{% url 'precaution_doc' precaution.name %}" class="btn btn-primary" target="_blank">
+                開啟檔案
+            </a>
+            {% if manager != None %}
+            <a href="{% url 'update_precaution' precaution.type precaution.name %}" class="btn btn-secondary">
+                編輯
+            </a>
+            {% endif %}
+            <input type ="button" class="btn btn-light" onclick="history.back()" value="取消">
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+{% endblock javascripts %}
