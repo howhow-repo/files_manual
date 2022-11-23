@@ -182,6 +182,7 @@ def delete_percaution(request, precaution_type, precaution_name):
     precaution_instance = Precaution.objects.filter(name=precaution_name).first()
     if not precaution_instance or precaution_instance.type.name != precaution_type:
         return http_not_found_page(request)
+
     context = {'segment': 'precaution', 'manager': True, 'delete_precaution': precaution_name,
                'precaution_type': precaution_type}
     if request.method == "POST":

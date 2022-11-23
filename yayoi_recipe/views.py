@@ -28,16 +28,6 @@ def is_manager(request):
         return False
 
 
-def is_in_database(recipe_type: str = None, recipe_name: str = None):
-    if recipe_type and recipe_type != 'all':
-        if not RecipeType.objects.filter(name=recipe_type).exists():
-            return False
-    if recipe_name:
-        if not Recipe.objects.filter(name=recipe_name).exists():
-            return False
-    return True
-
-
 def delete_recipe_related_file(recipe_instance):
     img_path = recipe_instance.cover.name
     pdf_path = recipe_instance.pdf.name
@@ -75,14 +65,14 @@ def recipe_types(request):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def delete_recipe_type(request, recipe_type):
-    if not is_in_database(recipe_type=recipe_type):
+    recipe_type = RecipeType.objects.filter(name=recipe_type).first()
+    if not recipe_type:
         return http_not_found_page(request)
 
     context = {'manager': True, 'segment': 'recipe_type', 'delete_recipe_type': recipe_type}
     if request.method == "POST":
         form = DeleteRecipeTypeForm(request.POST)
         if form.is_valid():
-            recipe_type = RecipeType.objects.filter(name=recipe_type)
             try:
                 recipe_type.delete()
                 return HttpResponseRedirect('/recipes/recipe_type')
@@ -126,9 +116,6 @@ def list_recipe_types(request):
 @require_http_methods(["GET"])
 @login_required(login_url="/login/")
 def list_recipes(request, recipe_type: str = 'all'):
-    if not is_in_database(recipe_type=recipe_type):
-        return http_not_found_page(request)
-
     context = {'segment': 'recipes'}
     if is_manager(request):
         context['manager'] = True
@@ -136,6 +123,9 @@ def list_recipes(request, recipe_type: str = 'all'):
     if recipe_type == 'all':
         context['recipes'] = Recipe.objects.all()
     else:
+        recipe_type = RecipeType.objects.filter(name=recipe_type).first()
+        if not recipe_type:
+            return http_not_found_page(request)
         context['recipes'] = Recipe.objects.filter(type__name=recipe_type)
 
     if not (context['recipes']):
@@ -147,11 +137,11 @@ def list_recipes(request, recipe_type: str = 'all'):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def update_recipe(request, recipe_type: str, recipe_name: str):
-    if not is_in_database(recipe_type, recipe_name):
-        return http_not_found_page(request)
-
     context = {'segment': 'recipes', 'manager': True, 'recipe_name': recipe_name, 'recipe_type': recipe_type}
-    recipe_instance = Recipe.objects.get(name=recipe_name)
+
+    recipe_instance = Recipe.objects.filter(name=recipe_name).first()
+    if not recipe_instance or recipe_instance.type.name != recipe_type:
+        return http_not_found_page(request)
     old_pdf_path = recipe_instance.pdf.name
     old_img_path = recipe_instance.cover.name
 
@@ -180,11 +170,11 @@ def update_recipe(request, recipe_type: str, recipe_name: str):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def delete_recipe(request, recipe_type: str, recipe_name: str):
-    if not is_in_database(recipe_type, recipe_name):
+    recipe_instance = Recipe.objects.filter(name=recipe_name).first()
+    if not recipe_instance or recipe_instance.type.name != recipe_type:
         return http_not_found_page(request)
 
     context = {'segment': 'recipes', 'manager': True, 'recipe_type': recipe_type, 'delete_recipe': recipe_name}
-    recipe_instance = Recipe.objects.get(name=recipe_name)
     if request.method == "POST":
         form = DeleteRecipeForm(request.POST)
         if form.is_valid() and form['confirm'].value() == 'yes':

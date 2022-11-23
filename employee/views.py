@@ -18,6 +18,7 @@ def manager_required(func):  # use as decorator
         else:
             html_template = loader.get_template('home/page-403.html')
             return HttpResponseForbidden(HttpResponse(html_template.render({}, request)))
+
     return wrapper
 
 
@@ -95,7 +96,6 @@ def edit_user(request, username):
 
     context['form'] = form
     return render(request, 'edit_user.html', context)
-
 
 
 @manager_required
