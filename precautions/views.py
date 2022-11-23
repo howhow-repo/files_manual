@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import ProtectedError
@@ -158,6 +159,7 @@ def update_percaution(request, precaution_type, precaution_name):
     old_img_path = precaution_instance.cover.name
 
     if request.method == "POST":
+        precaution_instance.last_update = datetime.now()
         form = PrecautionForm(request.POST, request.FILES, instance=precaution_instance)
         if form.is_valid():
             if 'cover' in form.changed_data:
