@@ -51,7 +51,7 @@
                                                     <div class="col-3">
                                                         <a href="{% url 'recipe_pdf' recipe.name %}" class="btn btn-secondary" target="_blank">PDF</a>
                                                     </div>
-                                                    {% if manager != None %}
+                                                    {% if user.department.name == "管理" %}
                                                     <div class="col-3">
                                                         <a href="{% url 'update_recipe' recipe.type recipe.name %}" class="btn btn-light">Edit</a>
                                                     </div>

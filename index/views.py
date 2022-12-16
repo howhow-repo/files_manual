@@ -6,15 +6,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+
+from lib.fill_form_initial_with_org_data import fill_form_initial_with_org_data
 from .forms import UserProfileEdit
 
 
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
-    User = get_user_model()
-    user = User.objects.get(username=request.user)
-    if user.department.name == '管理':
+    if request.user.department.name == '管理':
         context['manager'] = True
     form = UserProfileEdit()
 
@@ -27,10 +27,7 @@ def index(request):
         else:
             context['errMsg'] = update_form.errors.as_data()
 
-    for element in form.fields:
-        data_from_user = getattr(user, element)
-        if data_from_user is not None or data_from_user != "":
-            form.fields[element].initial = data_from_user
+    form = fill_form_initial_with_org_data(request.user, form)
 
     context['form'] = form
     return render(request, 'index.html', context)

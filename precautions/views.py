@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from employee.views import manager_required, set_org_data_in_form_initial
-from yayoi_recipe.views import http_not_found_page, is_manager, remove_document
+from yayoi_recipe.views import http_not_found_page, remove_document
 from doc_handle.views import video_extension, doc_extension
 from .forms import PrecautionTypeForm, DeletePrecautionTypeForm, PrecautionForm
 from .models import PrecautionType, Precaution
@@ -71,7 +71,7 @@ def delete_precaution_type(request, precaution_type):
     if not is_in_database(precaution_type=precaution_type):
         return http_not_found_page(request)
 
-    context = {'manager': True, 'segment': 'recipe_type', 'delete_precaution_type': precaution_type}
+    context = {'segment': 'recipe_type', 'delete_precaution_type': precaution_type}
     if request.method == "POST":
         form = DeletePrecautionTypeForm(request.POST)
         if form.is_valid():
@@ -91,7 +91,7 @@ def delete_precaution_type(request, precaution_type):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def upload_precaution(request):
-    context = {'segment': 'upload_precaution', 'manager': True}
+    context = {'segment': 'upload_precaution'}
     if request.method == "POST":
         form = PrecautionForm(request.POST, request.FILES)
         if form.is_valid():
@@ -111,8 +111,6 @@ def upload_precaution(request):
 @login_required(login_url="/login/")
 def list_precautions(request, precaution_type: str = 'all'):
     context = {'segment': 'precaution'}
-    if is_manager(request):
-        context['manager'] = True
     if precaution_type == 'all':
         context['precaution'] = Precaution.objects.all()
     else:
@@ -133,8 +131,6 @@ def list_precautions(request, precaution_type: str = 'all'):
 def precaution_detail(request, precaution_type, precaution_name):
 
     context = {'segment': 'precaution'}
-    if is_manager(request):
-        context['manager'] = True
 
     precaution = Precaution.objects.filter(name=precaution_name).first()
 
@@ -153,7 +149,7 @@ def update_percaution(request, precaution_type, precaution_name):
     precaution_instance = Precaution.objects.filter(name=precaution_name).first()
     if not precaution_instance or precaution_instance.type.name != precaution_type:
         return http_not_found_page(request)
-    context = {'segment': 'precaution', 'manager': True, 'precaution_name': precaution_name,
+    context = {'segment': 'precaution', 'precaution_name': precaution_name,
                'precaution_type': precaution_type}
     old_file_path = precaution_instance.file.name
     old_img_path = precaution_instance.cover.name
@@ -185,7 +181,7 @@ def delete_percaution(request, precaution_type, precaution_name):
     if not precaution_instance or precaution_instance.type.name != precaution_type:
         return http_not_found_page(request)
 
-    context = {'segment': 'precaution', 'manager': True, 'delete_precaution': precaution_name,
+    context = {'segment': 'precaution', 'delete_precaution': precaution_name,
                'precaution_type': precaution_type}
     if request.method == "POST":
         form = DeletePrecautionTypeForm(request.POST)

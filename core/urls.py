@@ -14,7 +14,9 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Yayoi API",
         default_version='v1',
-        description="",
+        description=r"api base url start with 'http://<host>:<port>/api/....'"
+                    "\n"
+                    r"ex: http://<host>:<port>/api/CheckServerHealth",
     ),
     public=True,
     # permission_classes=[permissions.IsAuthenticated],

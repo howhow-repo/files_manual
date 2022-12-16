@@ -1,6 +1,6 @@
 {% extends "layouts/new_base.html" %}
 
-{% block title %} User Management {% endblock %}
+{% block title %} Recipes {% endblock %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -42,7 +42,7 @@
                                                             <td>{{t.name}}</td>
                                                             <td>{{t.description}}</td>
 
-                                                            <td><a href="{% url 'list_recipes' t.name %}" class="label theme-bg2 text-white f-12">go to</a></td>
+                                                            <td><a href="{% url 'list_recipes' t.name %}" class="rounded label theme-bg2 text-white f-12 ">go to</a></td>
                                                         </tr>
                                                         {% endfor %}
                                                     </tbody>

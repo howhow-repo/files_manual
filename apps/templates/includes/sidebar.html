@@ -22,8 +22,7 @@
                             class="pcoded-mtext">個人資訊</span></a>
                 </li>
 
-                {% if manager%}
-
+                {% if user.department.name == "管理" %}
                 <li data-username="user_management"
                     class="nav-item pcoded-hasmenu" >
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span
@@ -33,25 +32,26 @@
                         <li class=""><a href="{% url 'register_user' %}">創建使用者</a></li>
                     </ul>
                 </li>
-                {% endif%}
+                {% endif %}
+                
                 <li class="nav-item pcoded-menu-caption">
                     <label>Recipes</label>
                 </li>
-                {% if manager%}
+                {% if user.department.name == "管理" %}
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item {% if 'recipe_type' in segment %} active {% endif %}">
                     <a href="{% url 'recipe_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
                             class="pcoded-mtext">類型管理</span></a>
                 </li>
-                {% endif%}
+                {% endif %}
 
-                {% if manager%}
+                {% if user.department.name == "管理" %}
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item {% if 'upload_recipe' in segment %} active {% endif %}">
                     <a href="{% url 'upload_recipe' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
                             class="pcoded-mtext">上傳食譜</span></a>
                 </li>
-                {% endif%}
+                {% endif %}
 
                 <li data-username="recipes"
                     class="nav-item pcoded-hasmenu" >
@@ -66,21 +66,21 @@
                     <label>Precautions</label>
                 </li>
 
-                {% if manager%}
+                {% if user.department.name == "管理" %}
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item {% if 'precaution_types' in segment %} active {% endif %}">
                     <a href="{% url 'precaution_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
                             class="pcoded-mtext">類型管理</span></a>
                 </li>
-                {% endif%}
+                {% endif %}
 
-                {% if manager%}
+                {% if user.department.name == "管理" %}
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item {% if 'upload_precaution' in segment %} active {% endif %}">
                     <a href="{% url 'upload_precaution' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
                             class="pcoded-mtext">上傳注意項</span></a>
                 </li>
-                {% endif%}
+                {% endif %}
                 <li data-username="precautions"
                     class="nav-item pcoded-hasmenu" >
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-book"></i></span><span
@@ -95,7 +95,7 @@
                 </li>
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
                     class="nav-item">
-                    <a href="{% url 'schema-swagger-ui' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-command"></i></span><span
+                    <a href="{% url 'schema-swagger-ui' %}" class="nav-link" target="_blank"><span class="pcoded-micon"><i class="feather icon-command"></i></span><span
                             class="pcoded-mtext">API</span></a>
                 </li>
 

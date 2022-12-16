@@ -75,7 +75,7 @@
             <a href="{% url 'precaution_doc' precaution.name %}" class="btn btn-primary" target="_blank">
                 開啟檔案
             </a>
-            {% if manager != None %}
+            {% if user.department.name == "管理" %}
             <a href="{% url 'update_precaution' precaution.type precaution.name %}" class="btn btn-secondary">
                 編輯
             </a>

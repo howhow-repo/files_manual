@@ -11,9 +11,7 @@ from django.template import loader
 
 def manager_required(func):  # use as decorator
     def wrapper(request, *args, **kwargs):
-        User = get_user_model()
-        user = User.objects.get(username=request.user)
-        if user.department.name == '管理':
+        if request.user.department.name == '管理':
             return func(request, *args, **kwargs)
         else:
             html_template = loader.get_template('home/page-403.html')
@@ -39,7 +37,6 @@ def set_org_data_in_form_initial(model_instance, form, skip_fields=None):
 @login_required(login_url="/login/")
 def view_all_users(request):
     context = {
-        'manager': True,
         'segment': 'user_management',
         'users': []
     }
@@ -66,7 +63,6 @@ def register_user(request):
         form = SignUpForm()
     return render(request, "create_user.html",
                   {
-                      'manager': True,
                       'segment': 'user_management',
                       'form': form,
                       'msg': msg,
@@ -78,7 +74,7 @@ def register_user(request):
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
 def edit_user(request, username):
-    context = {'manager': True, 'segment': 'user_management', 'edit_user': username}
+    context = {'segment': 'user_management', 'edit_user': username}
     User = get_user_model()
     user = User.objects.get(username=username)
     form = UserProfileEdit()
@@ -113,5 +109,5 @@ def delete_user(request, username):
         return HttpResponseRedirect("/user_management")
 
     else:
-        context = {'manager': True, 'segment': 'user_management', 'delete_user': username, 'form': DeleteUserForm()}
+        context = {'segment': 'user_management', 'delete_user': username, 'form': DeleteUserForm()}
         return render(request, 'delete_user_confirm.html', context)
