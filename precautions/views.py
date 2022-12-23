@@ -30,9 +30,9 @@ def set_data_type(precaution: Precaution):
         return
     file_extension = precaution.file.name.split('.')[-1]
     if file_extension in video_extension:
-        precaution.doc_type = '影片'
+        precaution.doc_type = 'video'
     elif file_extension in doc_extension:
-        precaution.doc_type = file_extension.upper()
+        precaution.doc_type = file_extension.lower()
     precaution.save()
 
 

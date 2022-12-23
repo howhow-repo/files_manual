@@ -2,6 +2,7 @@
 from django.urls import path
 from api.views import CheckServerHealth, Login, Logout, AmILogin
 from api.views import GetRecipeTypes, GetRecipes, GetRecipeDoc, GetRecipeImg
+from api.views import GetPrecautionTypes, GetPrecautions, GetPrecautionFile, GetPrecautionImg
 
 
 urlpatterns = [
@@ -14,4 +15,9 @@ urlpatterns = [
     path('Recipes/GetRecipes/<str:recipe_type>', GetRecipes.as_view(), name='api_GetRecipe'),
     path('Recipes/GetRecipeDoc/<str:recipe_name>', GetRecipeDoc.as_view(), name='api_GetRecipeDoc'),
     path('Recipes/GetRecipeImg/<str:recipe_name>', GetRecipeImg.as_view(), name='api_GetRecipeImg'),
+
+    path('Precautions/GetPrecautionTypes', GetPrecautionTypes.as_view(), name='api_GetPrecautionTypes'),
+    path('Precautions/GetPrecautions/<str:precaution_type>', GetPrecautions.as_view(), name='api_GetPrecautions'),
+    path('Precautions/GetPrecautionFile/<str:precaution_name>', GetPrecautionFile.as_view(), name='api_GetPrecautionFile'),
+    path('Precautions/GetPrecautionImg/<str:precaution_name>', GetPrecautionImg.as_view(), name='api_GetPrecautionImg'),
 ]
