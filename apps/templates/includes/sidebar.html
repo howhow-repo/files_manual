@@ -35,23 +35,8 @@
                 {% endif %}
                 
                 <li class="nav-item pcoded-menu-caption">
-                    <label>Recipes</label>
+                    <label>食譜</label>
                 </li>
-                {% if user.department.name == "管理" %}
-                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
-                    class="nav-item {% if 'recipe_type' in segment %} active {% endif %}">
-                    <a href="{% url 'recipe_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
-                            class="pcoded-mtext">類型管理</span></a>
-                </li>
-                {% endif %}
-
-                {% if user.department.name == "管理" %}
-                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
-                    class="nav-item {% if 'upload_recipe' in segment %} active {% endif %}">
-                    <a href="{% url 'upload_recipe' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
-                            class="pcoded-mtext">上傳食譜</span></a>
-                </li>
-                {% endif %}
 
                 <li data-username="recipes"
                     class="nav-item pcoded-hasmenu" >
@@ -62,25 +47,25 @@
                         <li class=""><a href="{% url 'search_recipe' %}">依類型搜尋</a></li>
                     </ul>
                 </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Precautions</label>
-                </li>
 
                 {% if user.department.name == "管理" %}
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
-                    class="nav-item {% if 'precaution_types' in segment %} active {% endif %}">
-                    <a href="{% url 'precaution_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
+                    class="nav-item {% if 'recipe_type' in segment %} active {% endif %}">
+                    <a href="{% url 'recipe_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
                             class="pcoded-mtext">類型管理</span></a>
                 </li>
-                {% endif %}
 
-                {% if user.department.name == "管理" %}
                 <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
-                    class="nav-item {% if 'upload_precaution' in segment %} active {% endif %}">
-                    <a href="{% url 'upload_precaution' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
-                            class="pcoded-mtext">上傳注意項</span></a>
+                    class="nav-item {% if 'upload_recipe' in segment %} active {% endif %}">
+                    <a href="{% url 'upload_recipe' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
+                            class="pcoded-mtext">上傳食譜</span></a>
                 </li>
                 {% endif %}
+
+                <li class="nav-item pcoded-menu-caption">
+                    <label>注意事項</label>
+                </li>
+
                 <li data-username="precautions"
                     class="nav-item pcoded-hasmenu" >
                     <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-book"></i></span><span
@@ -89,6 +74,20 @@
                         <li class=""><a href="{% url 'list_precautions' 'all' %}">全部</a></li>
                     </ul>
                 </li>
+
+                {% if user.department.name == "管理" %}
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                    class="nav-item {% if 'precaution_types' in segment %} active {% endif %}">
+                    <a href="{% url 'precaution_types' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-bookmark"></i></span><span
+                            class="pcoded-mtext">類型管理</span></a>
+                </li>
+
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project"
+                    class="nav-item {% if 'upload_precaution' in segment %} active {% endif %}">
+                    <a href="{% url 'upload_precaution' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span
+                            class="pcoded-mtext">上傳注意項</span></a>
+                </li>
+                {% endif %}
 
                 <li class="nav-item pcoded-menu-caption">
                     <label>App Api</label>
