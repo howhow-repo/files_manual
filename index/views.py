@@ -14,8 +14,6 @@ from .forms import UserProfileEdit
 @login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
-    if request.user.department.name == '管理':
-        context['manager'] = True
     form = UserProfileEdit()
 
     if request.method == 'POST':

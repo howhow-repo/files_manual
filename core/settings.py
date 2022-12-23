@@ -48,11 +48,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'apps.demo',                                    # Enable the inner demo (demo)
     'apps.authentication',
-    'allauth',                                      # OAuth new
-    'allauth.account',                              # OAuth new
-    'allauth.socialaccount',                        # OAuth new
-    'allauth.socialaccount.providers.github',       # OAuth new
-    'allauth.socialaccount.providers.twitter',      # OAuth new
+    'letsencrypt',
+    # 'allauth',                                      # OAuth new
+    # 'allauth.account',                              # OAuth new
+    # 'allauth.socialaccount',                        # OAuth new
+    # 'allauth.socialaccount.providers.github',       # OAuth new
+    # 'allauth.socialaccount.providers.twitter',      # OAuth new
     'index',
     'employee',
     'yayoi_recipe',
