@@ -11,9 +11,7 @@ __pycache__/
 *.sqlite3
 *.log
 .idea
-!/migrations/__init__.py
-/migrations/*
-
+*/migrations
 Docs/*
 !Docs/.gitkeep
 

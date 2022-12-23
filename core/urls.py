@@ -1,14 +1,10 @@
 # -*- encoding: utf-8 -*-
-from django.conf import settings
-from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-from employee.models import Department, BranchLocation
-from yayoi_recipe.models import RecipeType
-from precautions.models import PrecautionType
+from .initials import init_data_to_db
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -23,16 +19,7 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
-try:
-    Department.objects.get_or_create(name='其他')
-    Department.objects.get_or_create(name='內場')
-    Department.objects.get_or_create(name='外場')
-    Department.objects.get_or_create(name='管理')
-    BranchLocation.objects.get_or_create(name='其他')
-    RecipeType.objects.get_or_create(name='不分類')
-    PrecautionType.objects.get_or_create(name='一般')
-except Exception:
-    pass
+init_data_to_db()
 
 
 urlpatterns = [
