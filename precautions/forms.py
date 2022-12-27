@@ -5,9 +5,9 @@ from .models import PrecautionType, Precaution
 
 
 def docs_size(value): # add this to some file where you can import it from
-    limit = 100 * 1024 * 1024
+    limit = 200 * 1024 * 1024
     if value.size > limit:
-        raise ValidationError('File too large. Size should not exceed 100 MiB.')
+        raise ValidationError('File too large. Size should not > 100 MB.')
 
 
 class PrecautionTypeForm(forms.ModelForm):
