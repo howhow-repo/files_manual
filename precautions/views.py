@@ -145,7 +145,7 @@ def precaution_detail(request, precaution_type, precaution_name):
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
-def update_percaution(request, precaution_type, precaution_name):
+def update_precaution(request, precaution_type, precaution_name):
     precaution_instance = Precaution.objects.filter(name=precaution_name).first()
     if not precaution_instance or precaution_instance.type.name != precaution_type:
         return http_not_found_page(request)
@@ -155,7 +155,6 @@ def update_percaution(request, precaution_type, precaution_name):
     old_img_path = precaution_instance.cover.name
 
     if request.method == "POST":
-        precaution_instance.last_update = datetime.now()
         form = PrecautionForm(request.POST, request.FILES, instance=precaution_instance)
         if form.is_valid():
             if 'cover' in form.changed_data:
@@ -163,7 +162,10 @@ def update_percaution(request, precaution_type, precaution_name):
 
             if 'file' in form.changed_data:
                 remove_document(old_file_path)
-            form.save()
+
+            precaution = form.save(commit=False)
+            precaution.set_doc_type()
+            precaution.save()
             return HttpResponseRedirect(reverse('list_precautions', args=('all',)))
     else:
         form = PrecautionForm()
