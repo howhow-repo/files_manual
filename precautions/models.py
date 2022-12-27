@@ -54,3 +54,12 @@ class Precaution(models.Model):
 
     def __str__(self):
         return self.name
+
+    def set_doc_type(self):
+        if not self.file:
+            return
+        file_extension = str.lower(self.file.name.split('.')[-1])
+        if file_extension in ['mp4', 'mov']:
+            self.doc_type = 'video'
+        elif file_extension in ['pdf']:
+            self.doc_type = file_extension.lower()

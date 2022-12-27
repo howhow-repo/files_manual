@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import logging
 import os
 from django.http import HttpResponse, HttpResponseNotFound
 from .lib import stream_video
@@ -8,6 +9,7 @@ from precautions.models import Precaution
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
+logger = logging.getLogger(__name__)
 
 video_extension = ['mp4', 'mov']
 doc_extension = ['pdf']
@@ -63,17 +65,14 @@ def precaution_img(request, precaution_name):
 def precaution_doc(request, precaution_name):
     doc = Precaution.objects.get(name=precaution_name)
     path = doc.file.name
-    file_extension = path.split('.')[-1]
+    file_extension = str.lower(path.split('.')[-1])
     if file_extension in video_extension:
         return stream_video(request, path)
     elif file_extension in doc_extension:
-        try:
-            with open(path, "rb") as file:
-                return HttpResponse(file.read(), content_type="application/pdf")
-        except IOError:
-            html_template = loader.get_template('home/page-404.html')
-            return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
+        with open(path, "rb") as file:
+            return HttpResponse(file.read(), content_type="application/pdf")
     else:
+        logger.warning(f"precaution_doc {path} not in file_extension.")
         html_template = loader.get_template('home/page-404.html')
         return HttpResponseNotFound(HttpResponse(html_template.render({}, request)))
 

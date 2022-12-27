@@ -95,9 +95,9 @@ def upload_precaution(request):
     if request.method == "POST":
         form = PrecautionForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            precaution = Precaution.objects.get(name=form.data['name'])
-            set_data_type(precaution)
+            precaution = form.save(commit=False)
+            precaution.set_doc_type()
+            precaution.save()
             context['Msg'] = f'Success'
         else:
             context['errMsg'] = 'Form is not valid'
@@ -176,7 +176,7 @@ def update_percaution(request, precaution_type, precaution_name):
 @manager_required
 @require_http_methods(["GET", "POST"])
 @login_required(login_url="/login/")
-def delete_percaution(request, precaution_type, precaution_name):
+def delete_precaution(request, precaution_type, precaution_name):
     precaution_instance = Precaution.objects.filter(name=precaution_name).first()
     if not precaution_instance or precaution_instance.type.name != precaution_type:
         return http_not_found_page(request)
