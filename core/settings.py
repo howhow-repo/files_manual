@@ -26,7 +26,7 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets')
 
 # path for documents & media
-DOCS_ROOT = 'Docs'
+DOCS_ROOT = os.path.join(BASE_DIR, 'Docs')
 
 # load production server from .env
 ALLOWED_HOSTS        = ['localhost', 'localhost:85', '127.0.0.1',               config('SERVER', default='127.0.0.1')]
